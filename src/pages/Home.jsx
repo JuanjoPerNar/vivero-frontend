@@ -1,6 +1,6 @@
 export default function Home() {
     return (
-        <section className="min-h-screen px-4 py-10">
+        <section className="bg-[#F4F9EF] min-h-screen px-4 py-10">
             <div className="max-w-5xl mx-auto text-center">
                 <h1 className="text-3xl sm:text-4xl font-bold text-[#2f3e2e]">
                     Bienvenido a Raíces de La Dolo

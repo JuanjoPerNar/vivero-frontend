@@ -1,4 +1,6 @@
 import PlantCard from '../components/PlantCard'
+import EventCard from '../components/EventCard'
+
 import ficus from '../assets/ficus.jpg'
 import monstera from '../assets/monstera.jpg'
 import sanserviera from '../assets/sanserviera.jpg'
@@ -18,6 +20,27 @@ const plants = [
     name: 'Sansevieria trifasciata',
     description: 'Resistente y perfecta para principiantes. Poca agua.',
     image: sanserviera,
+  },
+]
+
+const events = [
+  {
+    title: 'Taller de huerto urbano',
+    date: 'Sábado 20 de abril',
+    description: 'Aprende a montar tu propio huerto en casa con materiales sostenibles.',
+    image: ficus,
+  },
+  {
+    title: 'Curso de plantas medicinales',
+    date: 'Miércoles 24 de abril',
+    description: 'Identifica y cuida plantas curativas que puedes tener en tu jardín.',
+    image: ficus,
+  },
+  {
+    title: 'Intercambio de esquejes',
+    date: 'Domingo 28 de abril',
+    description: 'Trae tus esquejes y llévate nuevas especies para tu colección.',
+    image: ficus,
   },
 ]
 
@@ -60,6 +83,24 @@ export default function Home() {
                                 name={plant.name}
                                 description={plant.description}
                                 image={plant.image}
+                            />
+                        ))}
+                    </div>
+                </div>
+            </section>
+            <section className="mt-16 mb-10">
+                <div className="max-w-7xl mx-auto px-4">
+                    <h2 className="text-2xl font-semibold text-[#2f3e2e] mb-6 text-center">
+                        Próximos eventos y talleres
+                    </h2>
+                    <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+                        {events.map((event, index) => (
+                            <EventCard 
+                                key={index}
+                                title={event.title}
+                                date={event.date}
+                                description={event.description}
+                                image={event.image}
                             />
                         ))}
                     </div>

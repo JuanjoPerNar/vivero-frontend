@@ -1,5 +1,6 @@
 import PlantCard from '../components/PlantCard'
 import EventCard from '../components/EventCard'
+import PostCard from '../components/PostCard'
 
 import ficus from '../assets/ficus.jpg'
 import monstera from '../assets/monstera.jpg'
@@ -43,6 +44,28 @@ const events = [
     image: ficus,
   },
 ]
+
+const posts = [
+  {
+    title: 'Mi rincón verde en el salón',
+    author: 'Laura Fernández',
+    description: 'He creado una estantería con luz natural donde mis plantas prosperan todo el año.',
+    image: ficus,
+  },
+  {
+    title: 'Huerto en el balcón',
+    author: 'Carlos Ruiz',
+    description: 'Cultivo tomates cherry, albahaca y rúcula en jardineras colgantes.',
+    image: ficus,
+  },
+  {
+    title: 'Proyecto de terraza ecológica',
+    author: 'María Gómez',
+    description: 'Transformé mi terraza en un oasis con compost casero y sistema de riego por goteo.',
+    image: ficus,
+  },
+]
+
 
 export default function Home() {
     return (
@@ -101,6 +124,24 @@ export default function Home() {
                                 date={event.date}
                                 description={event.description}
                                 image={event.image}
+                            />
+                        ))}
+                    </div>
+                </div>
+            </section>
+            <section className="mt-16 mb-10">
+                <div className="max-w-7xl mx-auto px-4">
+                    <h2 className="text-2xl font-semibold text-[#2f3e2e] mb-6 text-center">
+                        Comunidad Verde: ideas y proyectos
+                    </h2>
+                    <div className='grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3'>
+                        {posts.map((post, index) => (
+                            <PostCard 
+                                key={index}
+                                title={post.title}
+                                author={post.author}
+                                description={post.description}
+                                image={post.image}
                             />
                         ))}
                     </div>

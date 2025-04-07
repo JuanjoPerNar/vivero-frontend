@@ -1,3 +1,26 @@
+import PlantCard from '../components/PlantCard'
+import ficus from '../assets/ficus.jpg'
+import monstera from '../assets/monstera.jpg'
+import sanserviera from '../assets/sanserviera.jpg'
+
+const plants = [
+  {
+    name: 'Ficus lyrata',
+    description: 'Ideal para interior. Requiere luz indirecta y riego moderado.',
+    image: ficus,
+  },
+  {
+    name: 'Monstera deliciosa',
+    description: 'Planta tropical de interior con hojas grandes y vistosas.',
+    image: monstera,
+  },
+  {
+    name: 'Sansevieria trifasciata',
+    description: 'Resistente y perfecta para principiantes. Poca agua.',
+    image: sanserviera,
+  },
+]
+
 export default function Home() {
     return (
         <section className="min-h-screen px-4 py-10">
@@ -19,9 +42,26 @@ export default function Home() {
                         <p className="text-sm text-[#2f3e2e] mb-4">
                             También conocida como higuera de hoja de violín, es perfecta para interior por su porte elegante
                         </p>
-                        <button className="bg-[#2f3e2e] text-white px-4 py-2 rounded hover:bg-green-900 transition">
+                        <button className="bg-[#2f3e2e] text-white px-4 py-2 cursor-pointer rounded hover:bg-green-900 transition">
                             Ver más
                         </button>
+                    </div>
+                </div>
+            </section>
+            <section className="mt-16">
+                <div className="max-w-7xl mx-auto px-4">
+                    <h2 className="text-2xl font-semibold text-[#2f3e2e] mb-6 text-center">
+                        Nuestro catálogo
+                    </h2>
+                    <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+                        {plants.map((plant, index) => (
+                            <PlantCard 
+                                key={index}
+                                name={plant.name}
+                                description={plant.description}
+                                image={plant.image}
+                            />
+                        ))}
                     </div>
                 </div>
             </section>

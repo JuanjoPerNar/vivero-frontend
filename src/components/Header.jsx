@@ -12,21 +12,19 @@ export default function Header() {
   return (
     <header className="bg-[#C7DD9F] shadow-md">
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-        {/* Logo */}
         <div className="flex items-center gap-3">
           <img src={logoIlustrado} alt="Logo Raíces de La Dolo" className="h-24 w-auto" />
           <img src={logoTexto} alt="Texto Raíces de La Dolo" className="h-24 w-auto" />
         </div>
 
-        {/* Menú escritorio */}
         <nav className="hidden md:flex gap-6 text-[#2f3e2e] font-semibold text-sm">
           <a href="#" className="hover:text-green-800">Inicio</a>
           <a href="#" className="hover:text-green-800">Catálogo</a>
           <a href="#" className="hover:text-green-800">Talleres</a>
+          <a href="#" className="hover:text-green-800">Comunidad</a>
           <a href="#" className="hover:text-green-800">Contacto</a>
         </nav>
 
-        {/* Perfil escritorio */}
         <div className="hidden md:flex items-center gap-2">
           <img
             src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-5.png"
@@ -36,7 +34,6 @@ export default function Header() {
           <span className="text-sm text-[#2f3e2e] font-medium">Mi perfil</span>
         </div>
 
-        {/* Botón hamburguesa móvil */}
         <button
           className="block md:hidden text-[#2f3e2e] focus:outline-none"
           onClick={toggleMenu}
@@ -65,7 +62,6 @@ export default function Header() {
         </button>
       </div>
 
-      {/* Menú móvil desplegable */}
       {mobileOpen && (
         <div className="md:hidden px-4 pb-4">
           <nav className="flex flex-col gap-2 text-[#2f3e2e] font-medium text-sm">

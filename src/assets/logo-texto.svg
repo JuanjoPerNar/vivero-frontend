@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<svg baseProfile="full" height="300px" version="1.1" width="1000px" xmlns="http://www.w3.org/2000/svg" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><style type="text/css"><![CDATA[
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:wght@700&display=swap');
+
+.text-title {
+  font-family: 'Great Vibes', cursive;
+  font-size: 60px;
+  fill: rgb(30,60,30);
+  text-anchor: middle;
+}
+
+.text-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 36px;
+  fill: rgb(111,78,55);
+  text-anchor: middle;
+  text-transform: uppercase;
+}
+]]></style></defs><text class="text-title" x="500" y="100">Raíces de La Dolo</text><text class="text-subtitle" x="500" y="180">VIVERO DE PLANTAS</text></svg>

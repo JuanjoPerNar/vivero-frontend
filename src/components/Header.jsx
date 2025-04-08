@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import logoIlustrado from '../assets/logo-ilustrado.png'
 import logoTexto from '../assets/logo-texto.png'
+import { Link } from 'react-router-dom';
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -13,16 +14,21 @@ export default function Header() {
     <header className="bg-[#C7DD9F] shadow-md">
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <img src={logoIlustrado} alt="Logo Raíces de La Dolo" className="h-24 w-auto" />
-          <img src={logoTexto} alt="Texto Raíces de La Dolo" className="h-24 w-auto" />
+          <Link to="/">
+            <img src={logoIlustrado} alt="Logo Raíces de La Dolo" className="h-24 w-auto" />
+          </Link>
+          <Link to="/">
+            <img src={logoTexto} alt="Texto Raíces de La Dolo" className="h-24 w-auto" />
+          </Link>
         </div>
 
         <nav className="hidden md:flex gap-6 text-[#2f3e2e] font-semibold text-sm">
-          <a href="#" className="hover:text-green-800">Inicio</a>
-          <a href="#" className="hover:text-green-800">Catálogo</a>
-          <a href="#" className="hover:text-green-800">Talleres</a>
-          <a href="#" className="hover:text-green-800">Comunidad</a>
-          <a href="#" className="hover:text-green-800">Contacto</a>
+          <Link to="/" className="hover:text-green-800">Inicio</Link>
+          <Link to="/catalogo" className="hover:text-green-800">Catálogo</Link>
+          <Link to="/servicios" className="hover:text-green-800">Servicios</Link>
+          <Link to="/talleres" className="hover:text-green-800">Talleres</Link>
+          <Link to="/comunidad" className="hover:text-green-800">Comunidad</Link>
+          <Link to="/contacto" className="hover:text-green-800">Contacto</Link>
         </nav>
 
         <div className="hidden md:flex items-center gap-2">

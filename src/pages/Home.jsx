@@ -1,6 +1,7 @@
 import PlantCard from '../components/PlantCard'
 import EventCard from '../components/EventCard'
 import PostCard from '../components/PostCard'
+import ServiceCard from '../components/ServiceCard'
 
 import ficus from '../assets/ficus.jpg'
 import monstera from '../assets/monstera.jpg'
@@ -65,6 +66,25 @@ const posts = [
     image: ficus,
   },
 ]
+
+const services = [
+  {
+    title: 'Diseño de jardines',
+    description: 'Creamos espacios verdes a medida según tus necesidades.',
+    icon: '🌿',
+  },
+  {
+    title: 'Jardines verticales',
+    description: 'Instalamos jardines verticales para espacios pequeños.',
+    icon: '🧱',
+  },
+  {
+    title: 'Mantenimiento',
+    description: 'Nos encargamos del cuidado periódico de tus plantas.',
+    icon: '🧤',
+  },
+]
+
 
 
 export default function Home() {
@@ -144,6 +164,32 @@ export default function Home() {
                                 image={post.image}
                             />
                         ))}
+                    </div>
+                </div>
+            </section>
+            <section className="mt-16 mb-10">
+                <div className="max-w-7xl mx-auto px-4">
+                    <h2 className="text-2xl font-semibold text-[#2f3e2e] mb-6 text-center">
+                        Nuestros servicios
+                    </h2>
+                    <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 mb-6">
+                        {services.map((service, index) => (
+                            <ServiceCard 
+                                key={index}
+                                title={service.title}
+                                description={service.description}
+                                icon={service.icon}
+                            />
+                        ))}
+                    </div>
+
+                    <div className="flex justify-center">
+                        <a 
+                            href="/servicios"
+                            className="bg-[#2f3e2e] text-white px-6 py-2 rounded hover:bg-[#3f513d] transition"
+                        >
+                            Ver más
+                        </a>
                     </div>
                 </div>
             </section>

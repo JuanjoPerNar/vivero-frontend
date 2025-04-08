@@ -33,7 +33,7 @@ export default function Header() {
 
         <div className="hidden md:flex items-center gap-2">
           <img
-            src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-5.png"
+            src={logoIlustrado}
             alt="Perfil"
             className="h-8 w-8 rounded-full object-cover"
           />

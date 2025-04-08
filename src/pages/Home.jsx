@@ -3,6 +3,8 @@ import EventCard from '../components/EventCard'
 import PostCard from '../components/PostCard'
 import ServiceCard from '../components/ServiceCard'
 
+import { Link } from 'react-router-dom';
+
 import ficus from '../assets/ficus.jpg'
 import monstera from '../assets/monstera.jpg'
 import sanserviera from '../assets/sanserviera.jpg'
@@ -108,9 +110,16 @@ export default function Home() {
                         <p className="text-sm text-[#2f3e2e] mb-4">
                             También conocida como higuera de hoja de violín, es perfecta para interior por su porte elegante
                         </p>
-                        <button className="bg-[#2f3e2e] text-white px-4 py-2 cursor-pointer rounded hover:bg-green-900 transition">
-                            Ver más
-                        </button>
+
+                        <div className="mt-6 text-center">
+                            <Link
+                                to="/catalogo"
+                                className="bg-[#2f3e2e] text-white px-6 py-2 rounded hover:bg-[#3f513d] transition"
+                            >
+                                Ver más
+                            </Link>
+                        </div>
+
                     </div>
                 </div>
             </section>
@@ -129,6 +138,16 @@ export default function Home() {
                             />
                         ))}
                     </div>
+
+                    <div className="mt-6 text-center">
+                        <Link
+                            to="/catalogo"
+                            className="bg-[#2f3e2e] text-white px-6 py-2 rounded hover:bg-[#3f513d] transition"
+                        >
+                            Ver más
+                        </Link>
+                    </div>
+
                 </div>
             </section>
             <section className="mt-16 mb-10">
@@ -147,6 +166,16 @@ export default function Home() {
                             />
                         ))}
                     </div>
+
+                    <div className="mt-6 text-center">
+                        <Link
+                            to="/talleres"
+                            className="bg-[#2f3e2e] text-white px-6 py-2 rounded hover:bg-[#3f513d] transition"
+                        >
+                            Ver más
+                        </Link>
+                    </div>
+
                 </div>
             </section>
             <section className="mt-16 mb-10">
@@ -165,6 +194,16 @@ export default function Home() {
                             />
                         ))}
                     </div>
+
+                    <div className="mt-6 text-center">
+                        <Link
+                            to="/catalogo"
+                            className="bg-[#2f3e2e] text-white px-6 py-2 rounded hover:bg-[#3f513d] transition"
+                        >
+                            Ver más
+                        </Link>
+                    </div>
+
                 </div>
             </section>
             <section className="mt-16 mb-10">
@@ -184,13 +223,14 @@ export default function Home() {
                     </div>
 
                     <div className="flex justify-center">
-                        <a 
-                            href="/servicios"
+                        <Link
+                            to="/servicios"
                             className="bg-[#2f3e2e] text-white px-6 py-2 rounded hover:bg-[#3f513d] transition"
                         >
                             Ver más
-                        </a>
+                        </Link>
                     </div>
+
                 </div>
             </section>
         </section>

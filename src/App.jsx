@@ -6,7 +6,6 @@ import Catalogo from './pages/Catalogo'
 import Comunidad from './pages/Comunidad'
 import Talleres from './pages/Talleres'
 import Contacto from './pages/Contacto'
-import FilteredTest from './pages/FilteredTest'
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -22,7 +21,6 @@ function App() {
           <Route path="/comunidad" element={<Comunidad />} />
           <Route path="/talleres" element={<Talleres />} />
           <Route path="/contacto" element={<Contacto />} />
-          <Route path="/filtrado" element={<FilteredTest />} />
         </Routes>
       </main>
       <Footer />

@@ -4,6 +4,7 @@ import Home from './pages/Home'
 import Services from './pages/Services'
 import Catalogo from './pages/Catalogo'
 import Comunidad from './pages/Comunidad'
+import PostDetail from './pages/PostDetail'
 import Talleres from './pages/Talleres'
 import Contacto from './pages/Contacto'
 
@@ -19,6 +20,7 @@ function App() {
           <Route path="/catalogo" element={<Catalogo />} />
           <Route path="/servicios" element={<Services />} />
           <Route path="/comunidad" element={<Comunidad />} />
+          <Route path="/comunidad/:id" element={<PostDetail />} />
           <Route path="/talleres" element={<Talleres />} />
           <Route path="/contacto" element={<Contacto />} />
         </Routes>

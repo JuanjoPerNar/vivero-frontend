@@ -9,13 +9,11 @@ export default function Header() {
   const location = useLocation()
   const menuRef = useRef(null)
 
-  // Cierra el menú desplegable al cambiar de ruta
   useEffect(() => {
     setActiveMenu(null)
     setMobileMenuOpen(false)
   }, [location.pathname])
 
-  // Cierra el menú desplegable al hacer click fuera
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -46,12 +44,15 @@ export default function Header() {
         </div>
 
         {/* MENÚ DE NAVEGACIÓN (ESCRITORIO) */}
-        <div className="hidden md:flex flex-1 justify-center gap-6 text-[#2f3e2e] font-semibold text-sm relative">
+        <nav className="hidden md:flex flex-1 justify-center gap-6 text-[#2f3e2e] font-semibold text-sm relative">
           <Link to="/" className="hover:text-green-800 cursor-pointer">Inicio</Link>
 
           {/* Catálogo */}
           <div className="relative">
-            <button onClick={() => toggleMenu('catalogo')} className="hover:text-green-800 cursor-pointer">
+            <button
+              onClick={() => toggleMenu('catalogo')}
+              className={`cursor-pointer ${activeMenu === 'catalogo' ? 'text-green-800 font-bold' : 'hover:text-green-800'}`}
+            >
               Catálogo
             </button>
             {activeMenu === 'catalogo' && (
@@ -59,59 +60,86 @@ export default function Header() {
                 <li><Link to="/catalogo" className="block px-4 py-2 hover:bg-[#e5f3d5] rounded-t-xl font-medium">Ver todo el catálogo</Link></li>
                 <li><Link to="/catalogo" className="block px-4 py-2 hover:bg-[#e5f3d5]">Plantas</Link></li>
                 <li><Link to="/catalogo" className="block px-4 py-2 hover:bg-[#e5f3d5]">Macetas</Link></li>
-                <li><Link to="/catalogo" className="block px-4 py-2 hover:bg-[#e5f3d5] rounded-b-xl">Herramientas</Link></li>
+                <li><Link to="/catalogo" className="block px-4 py-2 hover:bg-[#e5f3d5]">Herramientas</Link></li>
+                <li><Link to="/catalogo" className="block px-4 py-2 hover:bg-[#e5f3d5]">Fertilizantes</Link></li>
+                <li><Link to="/catalogo" className="block px-4 py-2 hover:bg-[#e5f3d5] rounded-b-xl">Kits</Link></li>
               </ul>
             )}
           </div>
 
           {/* Servicios */}
           <div className="relative">
-            <button onClick={() => toggleMenu('servicios')} className="hover:text-green-800 cursor-pointer">
+            <button
+              onClick={() => toggleMenu('servicios')}
+              className={`cursor-pointer ${activeMenu === 'servicios' ? 'text-green-800 font-bold' : 'hover:text-green-800'}`}
+            >
               Servicios
             </button>
             {activeMenu === 'servicios' && (
-              <ul className="absolute bg-[#f0f8e2] border border-[#d0e2c2] rounded-xl shadow-lg mt-2 w-60 text-left z-10">
-                <li><Link to="/servicios" className="block px-4 py-2 hover:bg-[#e5f3d5] rounded-t-xl font-medium">Todos los servicios</Link></li>
-                <li><Link to="/servicios" className="block px-4 py-2 hover:bg-[#e5f3d5]">Jardines</Link></li>
-                <li><Link to="/servicios" className="block px-4 py-2 hover:bg-[#e5f3d5]">Verticales</Link></li>
-                <li><Link to="/servicios" className="block px-4 py-2 hover:bg-[#e5f3d5] rounded-b-xl">Asesoramiento</Link></li>
+              <ul className="absolute bg-[#f0f8e2] border border-[#d0e2c2] rounded-xl shadow-lg mt-2 w-72 text-left z-10">
+                {[
+                  "Diseño y creación de jardines",
+                  "Jardines verticales",
+                  "Mantenimiento periódico",
+                  "Instalación de riego eficiente",
+                  "Asesoramiento personalizado",
+                  "Alquiler de plantas para eventos",
+                  "Reciclaje de macetas",
+                  "Rescate/adopción de plantas"
+                ].map((servicio, index) => (
+                  <li key={index}>
+                    <Link to="/servicios" className={`block px-4 py-2 hover:bg-[#e5f3d5] ${index === 0 ? 'rounded-t-xl' : ''} ${index === 7 ? 'rounded-b-xl' : ''}`}>
+                      {servicio}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             )}
           </div>
 
-          {/* Talleres */}
+          {/* Actividades y eventos */}
           <div className="relative">
-            <button onClick={() => toggleMenu('eventos')} className="hover:text-green-800 cursor-pointer">
-              Talleres y eventos
+            <button
+              onClick={() => toggleMenu('eventos')}
+              className={`cursor-pointer ${activeMenu === 'eventos' ? 'text-green-800 font-bold' : 'hover:text-green-800'}`}
+            >
+              Actividades y eventos
             </button>
             {activeMenu === 'eventos' && (
-              <ul className="absolute bg-[#f0f8e2] border border-[#d0e2c2] rounded-xl shadow-lg mt-2 w-60 text-left z-10">
-                <li><Link to="/talleres" className="block px-4 py-2 hover:bg-[#e5f3d5] rounded-t-xl font-medium">Todos los talleres y eventos</Link></li>
+              <ul className="absolute bg-[#f0f8e2] border border-[#d0e2c2] rounded-xl shadow-lg mt-2 w-64 text-left z-10">
+                <li><Link to="/talleres" className="block px-4 py-2 hover:bg-[#e5f3d5] rounded-t-xl">Todas las actividades</Link></li>
                 <li><Link to="/talleres" className="block px-4 py-2 hover:bg-[#e5f3d5]">Cursos</Link></li>
-                <li><Link to="/talleres" className="block px-4 py-2 hover:bg-[#e5f3d5] rounded-b-xl">Eventos</Link></li>
+                <li><Link to="/talleres" className="block px-4 py-2 hover:bg-[#e5f3d5]">Talleres</Link></li>
+                <li><Link to="/talleres" className="block px-4 py-2 hover:bg-[#e5f3d5]">Exposiciones</Link></li>
+                <li><Link to="/talleres" className="block px-4 py-2 hover:bg-[#e5f3d5] rounded-b-xl">Otros eventos</Link></li>
               </ul>
             )}
           </div>
 
           <Link to="/comunidad" className="hover:text-green-800 cursor-pointer">Comunidad</Link>
+          <Link to="/nosotros" className="hover:text-green-800 cursor-pointer">Sobre nosotros</Link>
           <Link to="/contacto" className="hover:text-green-800 cursor-pointer">Contacto</Link>
-        </div>
 
-        {/* MENÚ CUENTA */}
-        <div className="hidden md:flex items-center ml-4 relative text-[#2f3e2e] font-semibold text-sm">
+          {/* Carrito */}
+          <Link to="/carrito" className="hover:text-green-800 text-2xl">🛒</Link>
+
+          {/* Cuenta */}
           <div className="relative">
-            <button onClick={() => toggleMenu('cuenta')} className="hover:text-green-800 cursor-pointer">
+            <button
+              onClick={() => toggleMenu('cuenta')}
+              className={`cursor-pointer ${activeMenu === 'cuenta' ? 'text-green-800 font-bold' : 'hover:text-green-800'}`}
+            >
               Cuenta
             </button>
             {activeMenu === 'cuenta' && (
               <ul className="absolute right-0 bg-[#f0f8e2] border border-[#d0e2c2] rounded-xl shadow-lg mt-2 w-44 text-left z-10">
-                <li><a href="#" className="block px-4 py-2 hover:bg-[#e5f3d5] rounded-t-xl">Mi perfil</a></li>
-                <li><a href="#" className="block px-4 py-2 hover:bg-[#e5f3d5]">Iniciar sesión</a></li>
-                <li><a href="#" className="block px-4 py-2 hover:bg-[#e5f3d5] rounded-b-xl">Registrarse</a></li>
+                <li><Link to="#" className="block px-4 py-2 hover:bg-[#e5f3d5] rounded-t-xl">Mi perfil</Link></li>
+                <li><Link to="/login" className="block px-4 py-2 hover:bg-[#e5f3d5]">Iniciar sesión</Link></li>
+                <li><Link to="/register" className="block px-4 py-2 hover:bg-[#e5f3d5] rounded-b-xl">Registrarse</Link></li>
               </ul>
             )}
           </div>
-        </div>
+        </nav>
 
         {/* BOTÓN HAMBURGUESA */}
         <button
@@ -140,13 +168,15 @@ export default function Header() {
           <Link to="/" className="block py-2 hover:text-green-800">Inicio</Link>
           <Link to="/catalogo" className="block py-2 hover:text-green-800">Catálogo</Link>
           <Link to="/servicios" className="block py-2 hover:text-green-800">Servicios</Link>
-          <Link to="/talleres" className="block py-2 hover:text-green-800">Talleres y eventos</Link>
+          <Link to="/talleres" className="block py-2 hover:text-green-800">Actividades y eventos</Link>
           <Link to="/comunidad" className="block py-2 hover:text-green-800">Comunidad</Link>
+          <Link to="/nosotros" className="block py-2 hover:text-green-800">Sobre nosotros</Link>
           <Link to="/contacto" className="block py-2 hover:text-green-800">Contacto</Link>
+          <Link to="/carrito" className="block py-2 hover:text-green-800">🛒 Carrito</Link>
           <hr className="border-[#a6bc8a]" />
           <Link to="#" className="block py-2 hover:text-green-800">Mi perfil</Link>
-          <Link to="#" className="block py-2 hover:text-green-800">Iniciar sesión</Link>
-          <Link to="#" className="block py-2 hover:text-green-800">Registrarse</Link>
+          <Link to="/login" className="block py-2 hover:text-green-800">Iniciar sesión</Link>
+          <Link to="/register" className="block py-2 hover:text-green-800">Registrarse</Link>
         </div>
       )}
     </header>

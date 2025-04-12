@@ -1,4 +1,5 @@
 import ServiceCard from "../components/ServiceCard"
+import { motion } from "framer-motion"
 
 const services = [
   {
@@ -33,29 +34,42 @@ const services = [
   },
 ]
 
-
 export default function Services() {
-    return (
-        <main className="min-h-screen px-4 py-10 bg-[#F4F9EF]">
-            <div className="max-w-7xl mx-auto">
-                <h1 className="text-3xl font-bold text-[#2f3e2e] mb-6 text-center">
-                    Nuestros servicios
-                </h1>
-                <p className="text-[#2f3e2e] text-center max-w-2xl mx-auto mb-10">
-                    En Raíces de La Dolo ofrecemos soluciones verdes a medida para hogares, empresas y espacios públicos.
-                </p>
+  return (
+    <main className="bg-[#F9FAF8] text-[#1C2B2D] font-['Playfair_Display']">
+      <section className="min-h-[40vh] bg-gradient-to-r from-[#EDF4EC] to-[#E2EFE3] flex flex-col items-center justify-center px-6 py-16 text-center">
+        <motion.h1
+          className="text-3xl md:text-4xl font-bold mb-4"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+        >
+          Nuestros servicios
+        </motion.h1>
+        <motion.p
+          className="text-base md:text-lg max-w-2xl"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3, duration: 1 }}
+        >
+          En Raíces de La Dolo ofrecemos soluciones verdes a medida para hogares, empresas y espacios públicos.
+        </motion.p>
+      </section>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                    {services.map((service, index) => (
-                        <ServiceCard 
-                            key={index}
-                            title={service.title}
-                            description={service.description}
-                            icon={service.icon}
-                        />
-                    ))}
-                </div>
-            </div>
-        </main>
-    )
-}
+      <section className="px-4 py-16">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+            {services.map((service, index) => (
+              <ServiceCard
+                key={index}
+                title={service.title}
+                description={service.description}
+                icon={service.icon}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+    </main>
+  )
+} 

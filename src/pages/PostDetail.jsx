@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
 import api from "../utils/api"
+import { motion } from "framer-motion"
 
 export default function PostDetail() {
   const { id } = useParams()
@@ -33,19 +34,32 @@ export default function PostDetail() {
   }
 
   return (
-    <section className="bg-[#F4F9EF] min-h-screen px-4 py-10 mt-16">
-      <div className="max-w-3xl mx-auto bg-white shadow rounded-lg p-6">
-        <img
-          src={post.image}
-          alt={post.title}
-          className="w-full h-64 object-cover rounded-md mb-6"
-        />
-        <h2 className="text-2xl font-bold text-[#2f3e2e] mb-2">{post.title}</h2>
-        <p className="text-sm text-[#2f3e2e] mb-1 font-medium italic">
-          Publicado por: {post.author}
-        </p>
-        <p className="text-base text-[#2f3e2e] mt-4">{post.description}</p>
-      </div>
-    </section>
+    <main className="bg-[#F9FAF8] text-[#1C2B2D] font-['Playfair_Display']">
+      <section className="min-h-[30vh] bg-gradient-to-r from-[#EDF4EC] to-[#E2EFE3] flex flex-col items-center justify-center px-6 py-12 text-center">
+        <motion.h1
+          className="text-3xl md:text-4xl font-bold"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+        >
+          Detalle de la publicación
+        </motion.h1>
+      </section>
+
+      <section className="px-4 py-16">
+        <div className="max-w-3xl mx-auto bg-white shadow rounded-lg p-6">
+          <img
+            src={post.image}
+            alt={post.title}
+            className="w-full h-64 object-cover rounded-md mb-6"
+          />
+          <h2 className="text-2xl font-bold text-[#2f3e2e] mb-2">{post.title}</h2>
+          <p className="text-sm text-[#2f3e2e] mb-1 font-medium italic">
+            Publicado por: {post.author}
+          </p>
+          <p className="text-base text-[#2f3e2e] mt-4 leading-relaxed">{post.description}</p>
+        </div>
+      </section>
+    </main>
   )
-}
+} 

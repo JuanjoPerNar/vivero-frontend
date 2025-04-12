@@ -7,6 +7,7 @@ import Comunidad from './pages/Comunidad'
 import PostDetail from './pages/PostDetail'
 import Talleres from './pages/Talleres'
 import Contacto from './pages/Contacto'
+import Nosotros from './pages/Nosotros'
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -22,6 +23,7 @@ function App() {
           <Route path="/comunidad" element={<Comunidad />} />
           <Route path="/comunidad/:id" element={<PostDetail />} />
           <Route path="/talleres" element={<Talleres />} />
+          <Route path="/nosotros" element={<Nosotros />} />
           <Route path="/contacto" element={<Contacto />} />
         </Routes>
       </main>

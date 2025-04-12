@@ -5,6 +5,8 @@ import ServiceCard from '../components/ServiceCard'
 
 import usePosts from "../hooks/usePosts"
 import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import { useState, useEffect } from 'react'
 
 import ficus from '../assets/ficus.jpg'
 import monstera from '../assets/monstera.jpg'
@@ -28,196 +30,139 @@ const plants = [
   },
 ]
 
-const events = [
-  {
-    title: 'Taller de huerto urbano',
-    date: 'Sábado 20 de abril',
-    description: 'Aprende a montar tu propio huerto en casa con materiales sostenibles.',
-    image: ficus,
-  },
-  {
-    title: 'Curso de plantas medicinales',
-    date: 'Miércoles 24 de abril',
-    description: 'Identifica y cuida plantas curativas que puedes tener en tu jardín.',
-    image: ficus,
-  },
-  {
-    title: 'Intercambio de esquejes',
-    date: 'Domingo 28 de abril',
-    description: 'Trae tus esquejes y llévate nuevas especies para tu colección.',
-    image: ficus,
-  },
+const carouselItems = [
+  { image: ficus, caption: "Ficus lyrata – Elegancia tropical" },
+  { image: monstera, caption: "Monstera deliciosa – Belleza salvaje" },
+  { image: sanserviera, caption: "Sansevieria – Fortaleza y sencillez" },
 ]
 
 const services = [
-  {
-    title: 'Diseño de jardines',
-    description: 'Creamos espacios verdes a medida según tus necesidades.',
-    icon: '🌿',
-  },
-  {
-    title: 'Jardines verticales',
-    description: 'Instalamos jardines verticales para espacios pequeños.',
-    icon: '🧱',
-  },
-  {
-    title: 'Mantenimiento',
-    description: 'Nos encargamos del cuidado periódico de tus plantas.',
-    icon: '🧤',
-  },
+  { title: 'Diseño de jardines', description: 'Espacios verdes que respiran contigo.', icon: '🌿' },
+  { title: 'Jardines verticales', description: 'Naturaleza en espacios reducidos.', icon: '🧱' },
+  { title: 'Mantenimiento', description: 'Tus plantas, siempre sanas y felices.', icon: '🧤' },
 ]
 
 export default function Home() {
   const { posts, loading, error } = usePosts()
+  const [currentSlide, setCurrentSlide] = useState(0)
+
+  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % carouselItems.length)
+  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + carouselItems.length) % carouselItems.length)
+
+  useEffect(() => {
+    const interval = setInterval(() => nextSlide(), 6000)
+    return () => clearInterval(interval)
+  }, [])
 
   return (
-    <section className="bg-[#F4F9EF] min-h-screen px-4 py-10">
-      <div className="max-w-5xl mx-auto text-center">
-        <h1 className="text-3xl sm:text-4xl font-bold text-[#2f3e2e]">
-          Bienvenido a Raíces de La Dolo
-        </h1>
-        <p className="mt-4 text-base sm:text-lg text-[#2f3e2e]">
-          Conecta con la naturaleza a través de nuestras plantas, talleres y comunidad 
-        </p>
-      </div>
+    <main className="bg-[#F9FAF8] text-[#1C2B2D] font-[\'Playfair Display\'],serif">
+      <section className="min-h-[70vh] bg-gradient-to-r from-[#EDF4EC] to-[#E2EFE3] flex flex-col md:flex-row items-center justify-between px-8 md:px-16 py-20">
+        <div className="max-w-xl">
+          <motion.h1 initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}
+            className="text-4xl md:text-5xl font-bold leading-tight mb-6">
+            Raíces de La Dolo
+          </motion.h1>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3, duration: 1 }}
+            className="text-lg md:text-xl mb-6">
+            Un vivero donde florecen las historias, las personas y lo natural.
+          </motion.p>
+          <Link to="/catalogo" className="inline-block bg-[#2f3e2e] text-white px-6 py-3 rounded-lg hover:bg-[#3f513d] transition">
+            Descubrir nuestras plantas
+          </Link>
+        </div>
+        <motion.img
+          src={monstera}
+          alt="Monstera"
+          className="mt-10 md:mt-0 w-full max-w-sm rounded-lg shadow-lg"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1 }}
+        />
+      </section>
 
-      {/* PLANTA DESTACADA */}
-      <section className="mt-16">
-        <div className="max-w-5xl mx-auto px-4">
-          <h2 className="text-2xl font-semibold text-[#2f3e2e] mb-4 text-center">
-            Planta destacada del mes
-          </h2>
-          <div className="bg-white rounded-lg shadow p-6 text-center">
-            <p className="text-lg font-medium text-[#2f3e2e] mb-2">Ficus lyrata</p>
-            <p className="text-sm text-[#2f3e2e] mb-4">
-              También conocida como higuera de hoja de violín, es perfecta para interior por su porte elegante
-            </p>
-            <div className="mt-6 text-center">
-              <Link
-                to="/catalogo"
-                className="bg-[#2f3e2e] text-white px-6 py-2 rounded hover:bg-[#3f513d] transition"
-              >
-                Ver más
-              </Link>
-            </div>
+      <section className="my-20 px-4">
+        <div className="max-w-5xl mx-auto relative rounded-xl overflow-hidden shadow-lg group">
+          <img
+            src={carouselItems[currentSlide].image}
+            alt={`Slide ${currentSlide + 1}`}
+            className="w-full h-72 object-cover rounded-xl transition duration-700 ease-in-out"
+          />
+          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white bg-opacity-90 px-5 py-3 rounded-full shadow text-sm font-medium">
+            {carouselItems[currentSlide].caption}
           </div>
+          <button onClick={prevSlide} className="absolute top-1/2 left-3 transform -translate-y-1/2 text-xl bg-white p-2 rounded-full shadow hover:bg-[#f1f5f0]">‹</button>
+          <button onClick={nextSlide} className="absolute top-1/2 right-3 transform -translate-y-1/2 text-xl bg-white p-2 rounded-full shadow hover:bg-[#f1f5f0]">›</button>
         </div>
       </section>
 
-      {/* CATÁLOGO */}
-      <section className="mt-16">
-        <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-2xl font-semibold text-[#2f3e2e] mb-6 text-center">
-            Nuestro catálogo
-          </h2>
-          <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+      <section className="py-20 px-4 bg-white">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-3xl font-bold mb-6">Nuestra historia</h2>
+          <p className="text-lg leading-relaxed">
+            “Raíces de La Dolo” nace del recuerdo de una mujer que supo reunir a su familia como nadie. Mi abuela Dolores no era jardinera, pero tenía el don de sembrar vínculos. Este vivero es una forma de cuidar, de estar presente y de conectar con lo esencial.
+          </p>
+        </div>
+      </section>
+
+      <section className="py-20 px-4 bg-[#F2F7F3]">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-2xl font-semibold text-center mb-12">Nuestro catálogo</h2>
+          <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
             {plants.map((plant, index) => (
-              <PlantCard 
-                key={index}
-                name={plant.name}
-                description={plant.description}
-                image={plant.image}
-              />
+              <PlantCard key={index} {...plant} />
             ))}
           </div>
-          <div className="mt-6 text-center">
-            <Link
-              to="/catalogo"
-              className="bg-[#2f3e2e] text-white px-6 py-2 rounded hover:bg-[#3f513d] transition"
-            >
-              Ver más
+          <div className="mt-8 text-center">
+            <Link to="/catalogo" className="bg-[#2f3e2e] text-white px-6 py-2 rounded hover:bg-[#3f513d] transition">
+              Ver todo el catálogo
             </Link>
           </div>
         </div>
       </section>
 
-      {/* EVENTOS Y TALLERES */}
-      <section className="mt-16 mb-10">
-        <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-2xl font-semibold text-[#2f3e2e] mb-6 text-center">
-            Próximos eventos y talleres
-          </h2>
-          <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-            {events.map((event, index) => (
-              <EventCard 
-                key={index}
-                title={event.title}
-                date={event.date}
-                description={event.description}
-                image={event.image}
-              />
-            ))}
-          </div>
-          <div className="mt-6 text-center">
-            <Link
-              to="/talleres"
-              className="bg-[#2f3e2e] text-white px-6 py-2 rounded hover:bg-[#3f513d] transition"
-            >
-              Ver más
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* COMUNIDAD VERDE */}
-      <section className="mt-16 mb-10">
-        <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-2xl font-semibold text-[#2f3e2e] mb-6 text-center">
-            Comunidad Verde: ideas y proyectos
-          </h2>
-
+      <section className="py-20 px-4">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-2xl font-semibold text-center mb-12">Comunidad Verde: ideas y proyectos</h2>
           {loading && <p className="text-center text-[#2f3e2e]">Cargando publicaciones...</p>}
           {error && <p className="text-center text-red-600">{error}</p>}
-
-          <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+          <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
             {posts.slice(-3).reverse().map((post) => (
-              <PostCard
-                key={post._id}
-                title={post.title}
-                author={post.author}
-                description={post.description}
-                image={post.image}
-              />
+              <PostCard key={post._id} {...post} />
             ))}
           </div>
-
-          <div className="mt-6 text-center">
-            <Link
-              to="/comunidad"
-              className="bg-[#2f3e2e] text-white px-6 py-2 rounded hover:bg-[#3f513d] transition"
-            >
-              Ver más
+          <div className="mt-10 text-center">
+            <Link to="/comunidad" className="bg-[#2f3e2e] text-white px-6 py-2 rounded hover:bg-[#3f513d] transition">
+              Ver más publicaciones
             </Link>
           </div>
         </div>
       </section>
 
-      {/* SERVICIOS */}
-      <section className="mt-16 mb-10">
-        <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-2xl font-semibold text-[#2f3e2e] mb-6 text-center">
-            Nuestros servicios
-          </h2>
-          <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 mb-6">
+      <section className="py-20 px-4 bg-[#EAF2EA]">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-2xl font-semibold text-center mb-12">Nuestros servicios</h2>
+          <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
             {services.map((service, index) => (
-              <ServiceCard 
-                key={index}
-                title={service.title}
-                description={service.description}
-                icon={service.icon}
-              />
+              <ServiceCard key={index} {...service} />
             ))}
           </div>
-          <div className="flex justify-center">
-            <Link
-              to="/servicios"
-              className="bg-[#2f3e2e] text-white px-6 py-2 rounded hover:bg-[#3f513d] transition"
-            >
-              Ver más
+          <div className="mt-10 text-center">
+            <Link to="/servicios" className="bg-[#2f3e2e] text-white px-6 py-2 rounded hover:bg-[#3f513d] transition">
+              Más información
             </Link>
           </div>
         </div>
       </section>
-    </section>
+
+      <section className="bg-[#2f3e2e] text-white py-20 px-4">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-3xl font-bold mb-4">¿Te unes a nuestra comunidad verde?</h2>
+          <p className="mb-6 text-lg">Comparte tu pasión, inspírate con otras personas y sigue cultivando contigo mismo.</p>
+          <Link to="/contacto" className="inline-block bg-white text-[#2f3e2e] font-semibold px-6 py-2 rounded hover:bg-[#f4f9ef] transition">
+            Contacta con nosotros
+          </Link>
+        </div>
+      </section>
+    </main>
   )
 }

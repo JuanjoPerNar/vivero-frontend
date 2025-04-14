@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { getPlants, searchPlantsByName } from "../utils/trefleApi"
 import { motion } from "framer-motion"
+import PlantModal from "../components/PlantModal"
 
 export default function PlantsTrefle() {
   const [query, setQuery] = useState("")
@@ -8,6 +9,14 @@ export default function PlantsTrefle() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
   const [page, setPage] = useState(1)
+
+  const [selectedPlant, setSelectedPlant] = useState(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const handleOpenModal = (plant) => {
+    setSelectedPlant(plant)
+    setIsModalOpen(true)
+  }
 
   const handleSearch = async (e) => {
     e.preventDefault()
@@ -94,8 +103,14 @@ export default function PlantsTrefle() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8 max-w-6xl mx-auto">
           {results.map((plant) => (
-            <div key={plant.id} className="bg-white p-6 rounded-xl shadow-md text-center transition-transform hover:scale-[1.02] duration-300">
-              <h2 className="text-xl font-semibold mb-1 font-['Playfair_Display']">{plant.common_name || "Sin nombre común"}</h2>
+            <div
+              key={plant.id}
+              onClick={() => handleOpenModal(plant)}
+              className="cursor-pointer bg-white p-6 rounded-xl shadow-md text-center transition-transform hover:scale-[1.02] duration-300"
+            >
+              <h2 className="text-xl font-semibold mb-1 font-['Playfair_Display']">
+                {plant.common_name || "Sin nombre común"}
+              </h2>
               <p className="text-sm italic text-gray-500 mb-2">{plant.scientific_name}</p>
               {plant.image_url && (
                 <img
@@ -125,6 +140,16 @@ export default function PlantsTrefle() {
           </button>
         </div>
       </section>
+
+      {isModalOpen && selectedPlant && (
+        <PlantModal
+          plant={selectedPlant}
+          onClose={() => {
+            setIsModalOpen(false)
+            setSelectedPlant(null)
+          }}
+        />
+      )}
     </main>
   )
 }

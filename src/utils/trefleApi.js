@@ -4,7 +4,7 @@ const API_URL = import.meta.env.VITE_API_URL
 
 export const searchPlantsByName = async (query) => {
   try {
-    const response = await axios.get(`${API_URL}/api/trefle`, {
+    const response = await axios.get(`${API_URL}/api/trefle/search`, {
       params: { q: query }
     })
 

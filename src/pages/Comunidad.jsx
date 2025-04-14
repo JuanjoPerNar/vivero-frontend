@@ -62,7 +62,7 @@ export default function Comunidad() {
         {loading && <p className="text-center">Cargando publicaciones...</p>}
         {error && <p className="text-center text-red-600">{error}</p>}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8 cursor-pointer">
           {posts.map((post) => (
             <div key={post._id} onClick={() => handleOpenModal(post)}>
               <PostCard {...post} />

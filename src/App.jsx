@@ -4,17 +4,18 @@ import Home from './pages/Home'
 import Services from './pages/Services'
 import Catalogo from './pages/Catalogo'
 import Comunidad from './pages/Comunidad'
-import PostDetail from './pages/PostDetail'
 import Talleres from './pages/Talleres'
 import Contacto from './pages/Contacto'
 import Nosotros from './pages/Nosotros'
 import PlantsTrefle from './pages/PlantsTrefle'
+import Login from './pages/Login'
+import Register from './pages/Register'
 
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom'
 
 function App() {
   return (
-    <Router>
+    <>
       <Header />
       <main className="min-h-screen">
         <Routes>
@@ -23,15 +24,17 @@ function App() {
           <Route path="/plantas" element={<PlantsTrefle />} />
           <Route path="/servicios" element={<Services />} />
           <Route path="/comunidad" element={<Comunidad />} />
-          <Route path="/comunidad/:id" element={<PostDetail />} />
           <Route path="/talleres" element={<Talleres />} />
           <Route path="/nosotros" element={<Nosotros />} />
           <Route path="/contacto" element={<Contacto />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </main>
       <Footer />
-    </Router>
+    </>
   )
 }
 
 export default App
+

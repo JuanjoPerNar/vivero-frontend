@@ -2,14 +2,15 @@ import { useState, useEffect, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { ShoppingCart } from 'lucide-react'
 import logoIlustrado from '../assets/logo-ilustrado.png'
+import { useAuth } from '../context/authContext'
 
 export default function Header() {
   const [activeMenu, setActiveMenu] = useState(null)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const location = useLocation()
   const menuRef = useRef(null)
-
-  const isLoggedIn = true
+  const { user } = useAuth()
+  const isLoggedIn = !!user
 
   useEffect(() => {
     setActiveMenu(null)
@@ -54,11 +55,11 @@ export default function Header() {
             {activeMenu === 'catalogo' && (
               <ul className="absolute bg-[#f0f8e2] border border-[#d0e2c2] rounded-xl shadow-lg mt-2 w-56 text-left z-10">
                 <li><Link to="/catalogo" className="block px-4 py-2 hover:bg-[#e5f3d5] rounded-t-xl font-medium">Ver todo el catálogo</Link></li>
-                <li><Link to="/catalogo" className="block px-4 py-2 hover:bg-[#e5f3d5]">Plantas</Link></li>
-                <li><Link to="/catalogo" className="block px-4 py-2 hover:bg-[#e5f3d5]">Macetas</Link></li>
-                <li><Link to="/catalogo" className="block px-4 py-2 hover:bg-[#e5f3d5]">Herramientas</Link></li>
-                <li><Link to="/catalogo" className="block px-4 py-2 hover:bg-[#e5f3d5]">Fertilizantes</Link></li>
-                <li><Link to="/catalogo" className="block px-4 py-2 hover:bg-[#e5f3d5] rounded-b-xl">Kits</Link></li>
+                <li><Link to="/catalogo?category=plantas" className="block px-4 py-2 hover:bg-[#e5f3d5]">Plantas</Link></li>
+                <li><Link to="/catalogo?category=macetas" className="block px-4 py-2 hover:bg-[#e5f3d5]">Macetas</Link></li>
+                <li><Link to="/catalogo?category=herramientas" className="block px-4 py-2 hover:bg-[#e5f3d5]">Herramientas</Link></li>
+                <li><Link to="/catalogo?category=fertilizantes" className="block px-4 py-2 hover:bg-[#e5f3d5]">Fertilizantes</Link></li>
+                <li><Link to="/catalogo?category=kits" className="block px-4 py-2 hover:bg-[#e5f3d5] rounded-b-xl">Kits</Link></li>
               </ul>
             )}
           </div>
@@ -75,9 +76,29 @@ export default function Header() {
             {activeMenu === 'servicios' && (
               <ul className="absolute bg-[#f0f8e2] border border-[#d0e2c2] rounded-xl shadow-lg mt-2 w-72 text-left z-10">
                 <li><Link to="/servicios" className="block px-4 py-2 hover:bg-[#e5f3d5] rounded-t-xl">Todos los servicios</Link></li>
-                {["Diseño y creación de jardines","Jardines verticales","Mantenimiento periódico","Instalación de riego eficiente","Asesoramiento personalizado","Alquiler de plantas para eventos","Reciclaje de macetas","Rescate/adopción de plantas"].map((servicio, index) => (
-                  <li key={index}>
-                    <Link to="/servicios" className={`block px-4 py-2 hover:bg-[#e5f3d5] ${index === 7 ? 'rounded-b-xl' : ''}`}>{servicio}</Link>
+                {[
+                  "jardines",
+                  "verticales",
+                  "mantenimiento",
+                  "riego",
+                  "asesoramiento",
+                  "alquiler",
+                  "reciclaje",
+                  "rescate"
+                ].map((slug, index) => (
+                  <li key={slug}>
+                    <Link to={`/servicios?tipo=${slug}`} className={`block px-4 py-2 hover:bg-[#e5f3d5] ${index === 7 ? 'rounded-b-xl' : ''}`}>
+                      {[
+                        "Diseño y creación de jardines",
+                        "Jardines verticales",
+                        "Mantenimiento periódico",
+                        "Instalación de riego eficiente",
+                        "Asesoramiento personalizado",
+                        "Alquiler de plantas para eventos",
+                        "Reciclaje de macetas",
+                        "Rescate/adopción de plantas"
+                      ][index]}
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -94,10 +115,10 @@ export default function Header() {
             {activeMenu === 'eventos' && (
               <ul className="absolute bg-[#f0f8e2] border border-[#d0e2c2] rounded-xl shadow-lg mt-2 w-64 text-left z-10">
                 <li><Link to="/talleres" className="block px-4 py-2 hover:bg-[#e5f3d5] rounded-t-xl">Todas las actividades</Link></li>
-                <li><Link to="/talleres" className="block px-4 py-2 hover:bg-[#e5f3d5]">Cursos</Link></li>
-                <li><Link to="/talleres" className="block px-4 py-2 hover:bg-[#e5f3d5]">Talleres</Link></li>
-                <li><Link to="/talleres" className="block px-4 py-2 hover:bg-[#e5f3d5]">Exposiciones</Link></li>
-                <li><Link to="/talleres" className="block px-4 py-2 hover:bg-[#e5f3d5] rounded-b-xl">Otros eventos</Link></li>
+                <li><Link to="/talleres?tipo=cursos" className="block px-4 py-2 hover:bg-[#e5f3d5]">Cursos</Link></li>
+                <li><Link to="/talleres?tipo=talleres" className="block px-4 py-2 hover:bg-[#e5f3d5]">Talleres</Link></li>
+                <li><Link to="/talleres?tipo=exposiciones" className="block px-4 py-2 hover:bg-[#e5f3d5]">Exposiciones</Link></li>
+                <li><Link to="/talleres?tipo=otros" className="block px-4 py-2 hover:bg-[#e5f3d5] rounded-b-xl">Otros eventos</Link></li>
               </ul>
             )}
           </div>
@@ -123,9 +144,14 @@ export default function Header() {
             </button>
             {activeMenu === 'cuenta' && (
               <ul className="absolute right-0 bg-[#f0f8e2] border border-[#d0e2c2] rounded-xl shadow-lg mt-2 w-44 text-left z-10">
-                <li><Link to="#" className="block px-4 py-2 hover:bg-[#e5f3d5] rounded-t-xl">Mi perfil</Link></li>
-                <li><Link to="/login" className="block px-4 py-2 hover:bg-[#e5f3d5]">Iniciar sesión</Link></li>
-                <li><Link to="/register" className="block px-4 py-2 hover:bg-[#e5f3d5] rounded-b-xl">Registrarse</Link></li>
+                {isLoggedIn ? (
+                  <li><Link to="/perfil" className="block px-4 py-2 hover:bg-[#e5f3d5] rounded-t-xl rounded-b-xl">Mi perfil</Link></li>
+                ) : (
+                  <>
+                    <li><Link to="/login" className="block px-4 py-2 hover:bg-[#e5f3d5] rounded-t-xl">Iniciar sesión</Link></li>
+                    <li><Link to="/register" className="block px-4 py-2 hover:bg-[#e5f3d5] rounded-b-xl">Registrarse</Link></li>
+                  </>
+                )}
               </ul>
             )}
           </div>
@@ -135,13 +161,7 @@ export default function Header() {
           className="md:hidden text-[#2f3e2e] focus:outline-none cursor-pointer"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={2}
-            viewBox="0 0 24 24"
-          >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
             {mobileMenuOpen ? (
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             ) : (
@@ -168,9 +188,14 @@ export default function Header() {
               Carrito
             </Link>
           )}
-          <Link to="#" className="block py-2 hover:text-green-800">Mi perfil</Link>
-          <Link to="/login" className="block py-2 hover:text-green-800">Iniciar sesión</Link>
-          <Link to="/register" className="block py-2 hover:text-green-800">Registrarse</Link>
+          {isLoggedIn ? (
+            <Link to="/perfil" className="block py-2 hover:text-green-800">Mi perfil</Link>
+          ) : (
+            <>
+              <Link to="/login" className="block py-2 hover:text-green-800">Iniciar sesión</Link>
+              <Link to="/register" className="block py-2 hover:text-green-800">Registrarse</Link>
+            </>
+          )}
         </div>
       )}
     </header>

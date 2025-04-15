@@ -107,7 +107,7 @@ export default function Header() {
           <Link to="/contacto" className="hover:text-green-800 cursor-pointer">Contacto</Link>
         </nav>
 
-        <div className="hidden md:flex gap-4 items-center">
+        <div className="hidden md:flex gap-4 items-center text-sm">
           {isLoggedIn && (
             <Link to="/carrito" className="hover:text-green-800 text-xl flex items-center gap-1">
               <ShoppingCart className="w-5 h-5" />

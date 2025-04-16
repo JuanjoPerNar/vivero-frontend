@@ -1,51 +1,52 @@
-import { useState } from 'react'
-import { useAuth } from '../context/authContext'
-import { useNavigate } from 'react-router-dom'
+import { useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { loginUser } from "../services/authService"
 
 export default function Login() {
-  const { loginUser } = useAuth()
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [error, setError] = useState(null)
   const navigate = useNavigate()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
 
-  const handleLogin = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
+    setError(null)
+
     try {
       await loginUser(email, password)
-      navigate('/')
+      navigate("/")
     } catch (err) {
-      setError('Error al iniciar sesión. Verifica tus credenciales.')
+      setError(err.message)
     }
   }
 
   return (
-    <main className="min-h-screen bg-[#F9FAF8] flex flex-col justify-center items-center px-4 py-12 text-[#1C2B2D] font-['Playfair_Display']">
-      <div className="w-full max-w-md bg-white shadow-lg rounded-xl p-6">
-        <h2 className="text-2xl font-semibold mb-6 text-center text-[#2f3e2e]">Iniciar sesión</h2>
-        {error && <p className="text-red-600 text-sm mb-4">{error}</p>}
-        <form onSubmit={handleLogin} className="space-y-4">
-          <input
-            type="email"
-            placeholder="Correo electrónico"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full border border-gray-300 px-4 py-2 rounded-md"
-            required
-          />
-          <input
-            type="password"
-            placeholder="Contraseña"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full border border-gray-300 px-4 py-2 rounded-md"
-            required
-          />
-          <button type="submit" className="w-full bg-[#2f3e2e] text-white py-2 rounded hover:bg-[#3f513d] transition">
-            Entrar
-          </button>
-        </form>
-      </div>
+    <main className="min-h-screen bg-[#F4F9EF] flex items-center justify-center px-4">
+      <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+        <h2 className="text-2xl font-bold text-[#2f3e2e] mb-6 text-center">Iniciar sesión</h2>
+        {error && <p className="text-red-600 mb-4">{error}</p>}
+
+        <input
+          type="email"
+          placeholder="Correo electrónico"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          className="w-full mb-4 p-3 border rounded-lg"
+        />
+        <input
+          type="password"
+          placeholder="Contraseña"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          className="w-full mb-6 p-3 border rounded-lg"
+        />
+
+        <button type="submit" className="w-full bg-[#2f3e2e] text-white py-2 rounded-lg hover:bg-[#3f513d] cursor-pointer">
+          Acceder
+        </button>
+      </form>
     </main>
   )
 }

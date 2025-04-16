@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { ShoppingCart } from 'lucide-react'
 import logoIlustrado from '../assets/logo-ilustrado.png'
 import { useAuth } from '../context/authContext'
+import { logoutUser } from '../services/authService'
 
 export default function Header() {
   const [activeMenu, setActiveMenu] = useState(null)
@@ -10,7 +11,9 @@ export default function Header() {
   const location = useLocation()
   const menuRef = useRef(null)
   const { user } = useAuth()
-  const isLoggedIn = !!user
+
+  if (user === undefined) return null
+  const isLoggedIn = user !== null
 
   useEffect(() => {
     setActiveMenu(null)
@@ -77,14 +80,8 @@ export default function Header() {
               <ul className="absolute bg-[#f0f8e2] border border-[#d0e2c2] rounded-xl shadow-lg mt-2 w-72 text-left z-10">
                 <li><Link to="/servicios" className="block px-4 py-2 hover:bg-[#e5f3d5] rounded-t-xl">Todos los servicios</Link></li>
                 {[
-                  "jardines",
-                  "verticales",
-                  "mantenimiento",
-                  "riego",
-                  "asesoramiento",
-                  "alquiler",
-                  "reciclaje",
-                  "rescate"
+                  "jardines", "verticales", "mantenimiento", "riego",
+                  "asesoramiento", "alquiler", "reciclaje", "rescate"
                 ].map((slug, index) => (
                   <li key={slug}>
                     <Link to={`/servicios?tipo=${slug}`} className={`block px-4 py-2 hover:bg-[#e5f3d5] ${index === 7 ? 'rounded-b-xl' : ''}`}>
@@ -145,7 +142,20 @@ export default function Header() {
             {activeMenu === 'cuenta' && (
               <ul className="absolute right-0 bg-[#f0f8e2] border border-[#d0e2c2] rounded-xl shadow-lg mt-2 w-44 text-left z-10">
                 {isLoggedIn ? (
-                  <li><Link to="/perfil" className="block px-4 py-2 hover:bg-[#e5f3d5] rounded-t-xl rounded-b-xl">Mi perfil</Link></li>
+                  <>
+                    <li><Link to="/perfil" className="block px-4 py-2 hover:bg-[#e5f3d5] rounded-t-xl">Mi perfil</Link></li>
+                    <li>
+                      <button
+                        onClick={async () => {
+                          await logoutUser()
+                          window.location.href = "/"
+                        }}
+                        className="block w-full text-left px-4 py-2 hover:bg-[#e5f3d5] rounded-b-xl cursor-pointer"
+                      >
+                        Cerrar sesión
+                      </button>
+                    </li>
+                  </>
                 ) : (
                   <>
                     <li><Link to="/login" className="block px-4 py-2 hover:bg-[#e5f3d5] rounded-t-xl">Iniciar sesión</Link></li>

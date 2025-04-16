@@ -1,43 +1,39 @@
 import { createContext, useContext, useEffect, useState } from "react"
 import { getAuth, onAuthStateChanged } from "firebase/auth"
-import { doc, getDoc, getFirestore } from "firebase/firestore"
+import { getFirestore, collection, query, where, getDocs } from "firebase/firestore"
 import { app } from "../firebase/firebaseConfig"
-
-const auth = getAuth(app)
-const db = getFirestore(app)
 
 const AuthContext = createContext()
 
-export const useAuth = () => {
-  return useContext(AuthContext)
-}
+export const useAuth = () => useContext(AuthContext)
 
-export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null)
+export default function AuthProvider({ children }) {
+  const [user, setUser] = useState(undefined)
+  const auth = getAuth(app)
+  const db = getFirestore(app)
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      if (firebaseUser) {
-        try {
-          const docRef = doc(db, "users", firebaseUser.uid)
-          const docSnap = await getDoc(docRef)
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const q = query(collection(db, "users"), where("uid", "==", user.uid))
+        const querySnapshot = await getDocs(q)
 
-          if (docSnap.exists()) {
-            setUser({
-              uid: firebaseUser.uid,
-              email: firebaseUser.email,
-              role: docSnap.data().role || "user",
-            })
-          } else {
-            // Si no hay documento, rol por defecto
-            setUser({
-              uid: firebaseUser.uid,
-              email: firebaseUser.email,
-              role: "user",
-            })
-          }
-        } catch (error) {
-          console.error("Error al obtener el rol:", error)
+        if (!querySnapshot.empty) {
+          const userDoc = querySnapshot.docs[0].data()
+          console.log("🔥 Usuario logado:", user.email, "Rol:", userDoc.role)
+
+          setUser({
+            uid: user.uid,
+            email: user.email,
+            role: userDoc.role
+          })
+        } else {
+          console.warn("⚠️ Usuario sin rol en Firestore")
+          setUser({
+            uid: user.uid,
+            email: user.email,
+            role: "user"
+          })
         }
       } else {
         setUser(null)
@@ -47,5 +43,9 @@ export const AuthProvider = ({ children }) => {
     return () => unsubscribe()
   }, [])
 
-  return <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
+  return (
+    <AuthContext.Provider value={{ user }}>
+      {children}
+    </AuthContext.Provider>
+  )
 }

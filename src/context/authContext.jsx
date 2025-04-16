@@ -20,15 +20,12 @@ export default function AuthProvider({ children }) {
 
         if (!querySnapshot.empty) {
           const userDoc = querySnapshot.docs[0].data()
-          console.log("🔥 Usuario logado:", user.email, "Rol:", userDoc.role)
-
           setUser({
             uid: user.uid,
             email: user.email,
             role: userDoc.role
           })
         } else {
-          console.warn("⚠️ Usuario sin rol en Firestore")
           setUser({
             uid: user.uid,
             email: user.email,

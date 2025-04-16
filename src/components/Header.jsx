@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { ShoppingCart } from 'lucide-react'
+import { FiShoppingCart } from 'react-icons/fi'
 import logoIlustrado from '../assets/logo-ilustrado.png'
 import { useAuth } from '../context/authContext'
 import { logoutUser } from '../services/authService'
@@ -11,8 +11,6 @@ export default function Header() {
   const location = useLocation()
   const menuRef = useRef(null)
   const { user } = useAuth()
-
-  if (user === undefined) return null
   const isLoggedIn = user !== null
 
   useEffect(() => {
@@ -36,6 +34,8 @@ export default function Header() {
     setActiveMenu(prev => prev === menuName ? null : menuName)
   }
 
+  if (user === undefined) return null
+
   return (
     <header className="bg-[#C7DD9F] shadow-md relative z-50">
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between" ref={menuRef}>
@@ -45,12 +45,14 @@ export default function Header() {
           </Link>
         </div>
 
-        {/* Menú de escritorio */}
         <nav className="hidden md:flex flex-1 justify-center gap-6 text-[#2f3e2e] font-semibold text-sm relative">
-          <Link to="/" className="hover:text-green-800">Inicio</Link>
+          <Link to="/" className="hover:text-green-800 cursor-pointer">Inicio</Link>
 
           <div className="relative">
-            <button onClick={() => toggleMenu('catalogo')} className={`cursor-pointer ${activeMenu === 'catalogo' ? 'text-green-800 font-bold' : 'hover:text-green-800'}`}>
+            <button
+              onClick={() => toggleMenu('catalogo')}
+              className={`cursor-pointer ${activeMenu === 'catalogo' ? 'text-green-800 font-bold' : 'hover:text-green-800'}`}
+            >
               Catálogo
             </button>
             {activeMenu === 'catalogo' && (
@@ -65,10 +67,13 @@ export default function Header() {
             )}
           </div>
 
-          <Link to="/plantas" className="hover:text-green-800">Plantas (Trefle)</Link>
+          <Link to="/plantas" className="hover:text-green-800 cursor-pointer">Plantas (Trefle)</Link>
 
           <div className="relative">
-            <button onClick={() => toggleMenu('servicios')} className={`cursor-pointer ${activeMenu === 'servicios' ? 'text-green-800 font-bold' : 'hover:text-green-800'}`}>
+            <button
+              onClick={() => toggleMenu('servicios')}
+              className={`cursor-pointer ${activeMenu === 'servicios' ? 'text-green-800 font-bold' : 'hover:text-green-800'}`}
+            >
               Servicios
             </button>
             {activeMenu === 'servicios' && (
@@ -98,7 +103,10 @@ export default function Header() {
           </div>
 
           <div className="relative">
-            <button onClick={() => toggleMenu('eventos')} className={`cursor-pointer ${activeMenu === 'eventos' ? 'text-green-800 font-bold' : 'hover:text-green-800'}`}>
+            <button
+              onClick={() => toggleMenu('eventos')}
+              className={`cursor-pointer ${activeMenu === 'eventos' ? 'text-green-800 font-bold' : 'hover:text-green-800'}`}
+            >
               Actividades y eventos
             </button>
             {activeMenu === 'eventos' && (
@@ -112,19 +120,23 @@ export default function Header() {
             )}
           </div>
 
-          <Link to="/comunidad" className="hover:text-green-800">Comunidad</Link>
-          <Link to="/nosotros" className="hover:text-green-800">Sobre nosotros</Link>
-          <Link to="/contacto" className="hover:text-green-800">Contacto</Link>
+          <Link to="/comunidad" className="hover:text-green-800 cursor-pointer">Comunidad</Link>
+          <Link to="/nosotros" className="hover:text-green-800 cursor-pointer">Sobre nosotros</Link>
+          <Link to="/contacto" className="hover:text-green-800 cursor-pointer">Contacto</Link>
         </nav>
 
         <div className="hidden md:flex gap-4 items-center text-sm">
           {isLoggedIn && (
             <Link to="/carrito" className="hover:text-green-800 text-xl flex items-center gap-1">
-              <ShoppingCart className="w-5 h-5" />
+              <FiShoppingCart className="w-5 h-5" />
             </Link>
           )}
+
           <div className="relative">
-            <button onClick={() => toggleMenu('cuenta')} className={`cursor-pointer ${activeMenu === 'cuenta' ? 'text-green-800 font-bold' : 'hover:text-green-800'}`}>
+            <button
+              onClick={() => toggleMenu('cuenta')}
+              className={`cursor-pointer ${activeMenu === 'cuenta' ? 'text-green-800 font-bold' : 'hover:text-green-800'}`}
+            >
               Cuenta
             </button>
             {activeMenu === 'cuenta' && (
@@ -138,7 +150,7 @@ export default function Header() {
                           await logoutUser()
                           window.location.href = "/"
                         }}
-                        className="block w-full text-left px-4 py-2 hover:bg-[#e5f3d5] rounded-b-xl"
+                        className="block w-full text-left px-4 py-2 hover:bg-[#e5f3d5] rounded-b-xl cursor-pointer"
                       >
                         Cerrar sesión
                       </button>
@@ -155,7 +167,6 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Botón hamburguesa */}
         <button
           className="md:hidden text-[#2f3e2e] focus:outline-none cursor-pointer"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -170,7 +181,6 @@ export default function Header() {
         </button>
       </div>
 
-      {/* Menú móvil */}
       {mobileMenuOpen && (
         <div className="md:hidden px-4 pb-4 bg-[#C7DD9F] text-[#2f3e2e] font-medium text-sm space-y-2">
           <Link to="/" className="block py-2 hover:text-green-800">Inicio</Link>

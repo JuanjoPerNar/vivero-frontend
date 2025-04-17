@@ -1,31 +1,13 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { motion } from "framer-motion"
 import PostCard from "../components/PostCard"
 import PostModal from "../components/PostModal"
-import api from "../utils/api"
+import usePosts from "../hooks/usePosts"
 
 export default function Comunidad() {
-  const [posts, setPosts] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState("")
+  const { posts, loading, error } = usePosts()
   const [selectedPost, setSelectedPost] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
-
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await api.get("/posts")
-        setPosts(response.data)
-      } catch (err) {
-        console.error("Error al cargar publicaciones:", err)
-        setError("No se pudieron cargar las publicaciones.")
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchPosts()
-  }, [])
 
   const handleOpenModal = (post) => {
     setSelectedPost(post)

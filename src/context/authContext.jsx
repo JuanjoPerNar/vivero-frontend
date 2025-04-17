@@ -23,12 +23,16 @@ export default function AuthProvider({ children }) {
           setUser({
             uid: user.uid,
             email: user.email,
+            name: userDoc.name,
+            surname: userDoc.surname,
             role: userDoc.role
           })
         } else {
           setUser({
             uid: user.uid,
             email: user.email,
+            name: userDoc.name,
+            surname: userDoc.surname,
             role: "user"
           })
         }

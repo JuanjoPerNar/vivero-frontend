@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom"
 import { registerUser } from "../services/authService"
 
 export default function Register() {
+  const [name, setName] = useState("")
+  const [surname, setSurname] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState(null)
@@ -13,7 +15,7 @@ export default function Register() {
     setError(null)
 
     try {
-      await registerUser(email, password)
+      await registerUser(email, password, name, surname)
       navigate("/")
     } catch (err) {
       setError(err.message)
@@ -27,6 +29,24 @@ export default function Register() {
         {error && <p className="text-red-600 mb-4">{error}</p>}
 
         <input
+          type="text"
+          placeholder="Nombre"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+          className="w-full mb-4 p-3 border rounded-lg"
+        />
+
+        <input
+          type="text"
+          placeholder="Apellido"
+          value={surname}
+          onChange={(e) => setSurname(e.target.value)}
+          required
+          className="w-full mb-4 p-3 border rounded-lg"
+        />
+
+        <input
           type="email"
           placeholder="Correo electrónico"
           value={email}
@@ -34,6 +54,7 @@ export default function Register() {
           required
           className="w-full mb-4 p-3 border rounded-lg"
         />
+
         <input
           type="password"
           placeholder="Contraseña"
@@ -43,7 +64,15 @@ export default function Register() {
           className="w-full mb-6 p-3 border rounded-lg"
         />
 
-        <button type="submit" className="w-full bg-[#2f3e2e] text-white py-2 rounded-lg hover:bg-[#3f513d] cursor-pointer">
+        <p className="text-xs text-gray-600 mb-4 text-center">
+          Al registrarte, aceptas nuestra{" "}
+          <a href="/aviso-legal" className="underline hover:text-green-800">política de privacidad</a>.
+        </p>
+
+        <button
+          type="submit"
+          className="w-full bg-[#2f3e2e] text-white py-2 rounded-lg hover:bg-[#3f513d] cursor-pointer"
+        >
           Registrarse
         </button>
       </form>

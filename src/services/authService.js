@@ -2,13 +2,15 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } f
 import { doc, setDoc, getDoc } from "firebase/firestore"
 import { auth, db } from "../firebase/firebaseConfig"
 
-export const registerUser = async (email, password) => {
+export const registerUser = async (email, password, name, surname) => {
   const userCredential = await createUserWithEmailAndPassword(auth, email, password)
   const user = userCredential.user
 
   await setDoc(doc(db, "users", user.uid), {
     uid: user.uid,
     email: user.email,
+    name,
+    surname,
     role: "user",
   })
 
@@ -22,7 +24,7 @@ export const loginUser = async (email, password) => {
 
 export const logoutUser = async () => {
   try {
-    await signOut(auth)    
+    await signOut(auth)
   } catch (error) {
     throw error
   }
@@ -31,4 +33,4 @@ export const logoutUser = async () => {
 export const getUserData = async (uid) => {
   const userDoc = await getDoc(doc(db, "users", uid))
   return userDoc.exists() ? userDoc.data() : null
-};
+}

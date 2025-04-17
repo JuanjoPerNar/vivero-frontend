@@ -2,10 +2,13 @@ import { useState } from "react"
 import { motion } from "framer-motion"
 import PostCard from "../components/PostCard"
 import PostModal from "../components/PostModal"
+import PostForm from "../components/PostForm"
 import usePosts from "../hooks/usePosts"
+import { useAuth } from "../context/authContext"
 
 export default function Comunidad() {
   const { posts, loading, error } = usePosts()
+  const { user } = useAuth()
   const [selectedPost, setSelectedPost] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -40,7 +43,17 @@ export default function Comunidad() {
         </motion.p>
       </section>
 
-      <section className="px-4 py-12 max-w-7xl mx-auto">
+      <section className="px-4 py-12 max-w-4xl mx-auto">
+        {user ? (
+          <PostForm />
+        ) : (
+          <p className="text-center text-sm text-[#2f3e2e] mb-8">
+            Debes <span className="font-semibold">iniciar sesión</span> o <span className="font-semibold">registrarte</span> para publicar en la comunidad.
+          </p>
+        )}
+      </section>
+
+      <section className="px-4 pb-16 max-w-7xl mx-auto">
         {loading && <p className="text-center">Cargando publicaciones...</p>}
         {error && <p className="text-center text-red-600">{error}</p>}
 

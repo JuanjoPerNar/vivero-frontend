@@ -148,7 +148,7 @@ export default function Header() {
                       <button
                         onClick={async () => {
                           await logoutUser()
-                          window.location.href = "/"
+                          window.location.href = "/login"
                         }}
                         className="block w-full text-left px-4 py-2 hover:bg-[#e5f3d5] rounded-b-xl cursor-pointer"
                       >

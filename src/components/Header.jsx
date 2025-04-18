@@ -79,22 +79,10 @@ export default function Header() {
             {activeMenu === 'servicios' && (
               <ul className="absolute bg-[#f0f8e2] border border-[#d0e2c2] rounded-xl shadow-lg mt-2 w-72 text-left z-10">
                 <li><Link to="/servicios" className="block px-4 py-2 hover:bg-[#e5f3d5] rounded-t-xl">Todos los servicios</Link></li>
-                {[
-                  "jardines", "verticales", "mantenimiento", "riego",
-                  "asesoramiento", "alquiler", "reciclaje", "rescate"
-                ].map((slug, index) => (
+                {["jardines", "verticales", "mantenimiento", "riego", "asesoramiento", "alquiler", "reciclaje", "rescate"].map((slug, index) => (
                   <li key={slug}>
                     <Link to={`/servicios?tipo=${slug}`} className={`block px-4 py-2 hover:bg-[#e5f3d5] ${index === 7 ? 'rounded-b-xl' : ''}`}>
-                      {[
-                        "Diseño y creación de jardines",
-                        "Jardines verticales",
-                        "Mantenimiento periódico",
-                        "Instalación de riego eficiente",
-                        "Asesoramiento personalizado",
-                        "Alquiler de plantas para eventos",
-                        "Reciclaje de macetas",
-                        "Rescate/adopción de plantas"
-                      ][index]}
+                      {["Diseño y creación de jardines", "Jardines verticales", "Mantenimiento periódico", "Instalación de riego eficiente", "Asesoramiento personalizado", "Alquiler de plantas para eventos", "Reciclaje de macetas", "Rescate/adopción de plantas"][index]}
                     </Link>
                   </li>
                 ))}
@@ -135,9 +123,9 @@ export default function Header() {
           <div className="relative">
             <button
               onClick={() => toggleMenu('cuenta')}
-              className={`cursor-pointer ${activeMenu === 'cuenta' ? 'text-green-800 font-bold' : 'hover:text-green-800'}`}
+              className={`cursor-pointer text-sm font-semibold ${activeMenu === 'cuenta' ? 'text-green-800 font-bold' : 'hover:text-green-800'}`}
             >
-              Cuenta
+              {user?.name ? `Mi perfil (${user.name.split(" ")[0]})` : "Cuenta"}
             </button>
             {activeMenu === 'cuenta' && (
               <ul className="absolute right-0 bg-[#f0f8e2] border border-[#d0e2c2] rounded-xl shadow-lg mt-2 w-44 text-left z-10">
@@ -193,14 +181,23 @@ export default function Header() {
           <Link to="/contacto" className="block py-2 hover:text-green-800">Contacto</Link>
           <hr className="border-[#a6bc8a]" />
           {isLoggedIn && (
-            <Link to="/carrito" className="flex items-center gap-2 py-2 hover:text-green-800">
-              <ShoppingCart className="w-5 h-5" />
-              Carrito
-            </Link>
+            <>
+              <p className="py-2 text-sm text-[#2f3e2e] font-medium">
+                Mi perfil ({user?.name?.split(" ")[0] || "Usuario"})
+              </p>
+              <Link to="/perfil" className="block py-2 hover:text-green-800">Mi perfil</Link>
+              <button
+                onClick={async () => {
+                  await logoutUser()
+                  window.location.href = "/login"
+                }}
+                className="block w-full text-left py-2 hover:text-green-800"
+              >
+                Cerrar sesión
+              </button>
+            </>
           )}
-          {isLoggedIn ? (
-            <Link to="/perfil" className="block py-2 hover:text-green-800">Mi perfil</Link>
-          ) : (
+          {!isLoggedIn && (
             <>
               <Link to="/login" className="block py-2 hover:text-green-800">Iniciar sesión</Link>
               <Link to="/register" className="block py-2 hover:text-green-800">Registrarse</Link>

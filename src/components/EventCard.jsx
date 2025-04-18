@@ -4,7 +4,7 @@ export default function EventCard({ title, date, description, image }) {
       <img
         src={image}
         alt={title}
-        className="w-full h-48 object-cover rounded-lg mb-4"
+        className="w-full max-h-48 object-contain rounded-lg mb-4"
       />
       <h3 className="text-xl font-semibold mb-1 font-['Playfair_Display']">{title}</h3>
       <p className="text-sm mb-2 font-medium italic text-[#3f513d]">{date}</p>

@@ -1,22 +1,18 @@
-import formatPrice from "../utils/formatPrice"
-
-export default function ProductCard({ name, description, price, category, size, image }) {
+export default function ProductCard({ name, description, price, category, size, image, onClick }) {
   return (
-    <div className="bg-white rounded-xl shadow-md p-6 text-[#2f3e2e] text-center transition-transform hover:scale-[1.02] duration-300">
+    <div
+      onClick={onClick}
+      className="bg-white rounded-lg shadow p-4 cursor-pointer hover:shadow-md transition"
+    >
       <img
         src={image}
         alt={name}
-        className="w-full h-48 object-cover rounded-lg mb-4"
+        className="w-full h-48 object-cover rounded-md mb-4"
       />
-      <h3 className="text-xl font-semibold mb-2 font-['Playfair_Display']">{name}</h3>
-      <p className="text-sm mb-2 leading-relaxed">{description}</p>
-      <p className="text-sm mb-1">
-        <span className="font-medium">Categoría:</span> {category}
-      </p>
-      <p className="text-sm mb-1">
-        <span className="font-medium">Tamaño:</span> {size}
-      </p>
-      <p className="text-base font-bold mt-3 text-[#3f513d]">{formatPrice(price)}</p>
+      <h3 className="text-lg font-bold text-[#2f3e2e] mb-1">{name}</h3>
+      <p className="text-sm text-[#2f3e2e] mb-1 font-medium">Categoría: {category}</p>
+      <p className="text-sm text-[#2f3e2e] mb-1 font-medium">Tamaño: {size}</p>
+      <p className="text-sm text-[#2f3e2e] font-semibold">{price} €</p>
     </div>
   )
-} 
+}

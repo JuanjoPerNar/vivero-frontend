@@ -2,15 +2,18 @@ import { useState } from "react"
 import useProducts from "../hooks/useProducts"
 import useFilteredProducts from "../hooks/useFilteredProducts"
 import ProductCard from "../components/ProductCard"
+import ProductModal from "../components/ProductModal"
 import { motion } from "framer-motion"
 
 export default function Catalogo() {
   const [selectedCategory, setSelectedCategory] = useState("")
+  const [selectedProduct, setSelectedProduct] = useState(null)
 
   const {
     products: allProducts,
     loading: allLoading,
-    error: allError
+    error: allError,
+    refetch
   } = useProducts()
 
   const {
@@ -91,11 +94,20 @@ export default function Catalogo() {
                 category={product.category}
                 size={product.size}
                 image={product.image}
+                onClick={() => setSelectedProduct(product)}
               />
             ))}
           </div>
         </div>
       </section>
+
+      {selectedProduct && (
+        <ProductModal
+          product={selectedProduct}
+          onClose={() => setSelectedProduct(null)}
+          refetch={refetch}
+        />
+      )}
     </main>
   )
-} 
+}

@@ -111,10 +111,14 @@ export default function Header() {
           <Link to="/comunidad" className="hover:text-green-800 cursor-pointer">Comunidad</Link>
           <Link to="/nosotros" className="hover:text-green-800 cursor-pointer">Sobre nosotros</Link>
           <Link to="/contacto" className="hover:text-green-800 cursor-pointer">Contacto</Link>
+
+          {isLoggedIn && user.role === "admin" && (
+            <Link to="/admin" className="hover:text-green-800 cursor-pointer">Dashboard</Link>
+          )}
         </nav>
 
         <div className="hidden md:flex gap-4 items-center text-sm text-[#2f3e2e] font-semibold">
-          {isLoggedIn && (
+          {isLoggedIn && user.role === "user" && (
             <Link to="/carrito" className="hover:text-green-800 text-xl flex items-center gap-1">
               <FiShoppingCart className="w-5 h-5" />
             </Link>
@@ -129,27 +133,18 @@ export default function Header() {
             </button>
             {activeMenu === 'cuenta' && (
               <ul className="absolute right-0 bg-[#f0f8e2] border border-[#d0e2c2] rounded-xl shadow-lg mt-2 w-44 text-left z-10">
-                {isLoggedIn ? (
-                  <>
-                    <li><Link to="/perfil" className="block px-4 py-2 hover:bg-[#e5f3d5] rounded-t-xl">Mi perfil</Link></li>
-                    <li>
-                      <button
-                        onClick={async () => {
-                          await logoutUser()
-                          window.location.href = "/login"
-                        }}
-                        className="block w-full text-left px-4 py-2 hover:bg-[#e5f3d5] rounded-b-xl cursor-pointer"
-                      >
-                        Cerrar sesión
-                      </button>
-                    </li>
-                  </>
-                ) : (
-                  <>
-                    <li><Link to="/login" className="block px-4 py-2 hover:bg-[#e5f3d5] rounded-t-xl">Iniciar sesión</Link></li>
-                    <li><Link to="/register" className="block px-4 py-2 hover:bg-[#e5f3d5] rounded-b-xl">Registrarse</Link></li>
-                  </>
-                )}
+                <li><Link to="/perfil" className="block px-4 py-2 hover:bg-[#e5f3d5] rounded-t-xl">Mi perfil</Link></li>
+                <li>
+                  <button
+                    onClick={async () => {
+                      await logoutUser()
+                      window.location.href = "/login"
+                    }}
+                    className="block w-full text-left px-4 py-2 hover:bg-[#e5f3d5] rounded-b-xl cursor-pointer"
+                  >
+                    Cerrar sesión
+                  </button>
+                </li>
               </ul>
             )}
           </div>
@@ -179,12 +174,18 @@ export default function Header() {
           <Link to="/comunidad" className="block py-2 hover:text-green-800">Comunidad</Link>
           <Link to="/nosotros" className="block py-2 hover:text-green-800">Sobre nosotros</Link>
           <Link to="/contacto" className="block py-2 hover:text-green-800">Contacto</Link>
+          {isLoggedIn && user.role === "admin" && (
+            <Link to="/admin" className="block py-2 hover:text-green-800">Dashboard</Link>
+          )}
           <hr className="border-[#a6bc8a]" />
-          {isLoggedIn && (
+          {isLoggedIn && user.role === "user" && (
+            <Link to="/carrito" className="flex items-center gap-2 py-2 hover:text-green-800">
+              <FiShoppingCart className="w-5 h-5" />
+              Carrito
+            </Link>
+          )}
+          {isLoggedIn ? (
             <>
-              <p className="py-2 text-sm text-[#2f3e2e] font-medium">
-                Mi perfil ({user?.name?.split(" ")[0] || "Usuario"})
-              </p>
               <Link to="/perfil" className="block py-2 hover:text-green-800">Mi perfil</Link>
               <button
                 onClick={async () => {
@@ -196,8 +197,7 @@ export default function Header() {
                 Cerrar sesión
               </button>
             </>
-          )}
-          {!isLoggedIn && (
+          ) : (
             <>
               <Link to="/login" className="block py-2 hover:text-green-800">Iniciar sesión</Link>
               <Link to="/register" className="block py-2 hover:text-green-800">Registrarse</Link>

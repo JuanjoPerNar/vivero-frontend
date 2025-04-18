@@ -1,43 +1,24 @@
+import { useState } from "react"
+import useServices from "../hooks/useServices"
 import ServiceCard from "../components/ServiceCard"
+import ServiceModal from "../components/ServiceModal"
 import { motion } from "framer-motion"
 
-const services = [
-  {
-    title: 'Diseño y creación de jardines',
-    description: 'Creamos espacios verdes personalizados desde cero, adaptados a tu espacio y estilo.',
-    icon: '🌿',
-  },
-  {
-    title: 'Instalación de jardines verticales',
-    description: 'Ideal para balcones y paredes interiores. Verde donde parecía imposible.',
-    icon: '🧱',
-  },
-  {
-    title: 'Mantenimiento periódico',
-    description: 'Nos encargamos de tus plantas: riego, abono, poda, salud y belleza garantizadas.',
-    icon: '🧤',
-  },
-  {
-    title: 'Sistemas de riego eficientes',
-    description: 'Instalamos riego automático o por goteo para mantener tu jardín sin esfuerzo.',
-    icon: '💧',
-  },
-  {
-    title: 'Decoración para eventos',
-    description: 'Plantas vivas y arreglos verdes para bodas, eventos y sesiones fotográficas.',
-    icon: '🌸',
-  },
-  {
-    title: 'Asesoramiento botánico',
-    description: 'Te guiamos para elegir y cuidar las plantas más adecuadas para tu entorno.',
-    icon: '📚',
-  },
-]
-
 export default function Services() {
+  const { services, loading, error, refetch } = useServices()
+  const [selectedService, setSelectedService] = useState(null)
+
+  const handleOpenModal = (service) => {
+    setSelectedService(service)
+  }
+
+  const handleCloseModal = () => {
+    setSelectedService(null)
+  }
+
   return (
-    <main className="bg-[#F9FAF8] text-[#1C2B2D] font-['Playfair_Display']">
-      <section className="min-h-[40vh] bg-gradient-to-r from-[#EDF4EC] to-[#E2EFE3] flex flex-col items-center justify-center px-6 py-16 text-center">
+    <main className="min-h-screen bg-[#F4F9EF] text-[#2f3e2e] font-['Playfair_Display']">
+      <section className="min-h-[30vh] bg-gradient-to-r from-[#E8F3E4] to-[#D8EAD3] flex flex-col items-center justify-center px-6 py-16 text-center">
         <motion.h1
           className="text-3xl md:text-4xl font-bold mb-4"
           initial={{ opacity: 0, y: -20 }}
@@ -52,24 +33,49 @@ export default function Services() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3, duration: 1 }}
         >
-          En Raíces de La Dolo ofrecemos soluciones verdes a medida para hogares, empresas y espacios públicos.
+          Descubre los servicios que ofrecemos para ayudarte a cuidar, diseñar y disfrutar de tu espacio verde.
         </motion.p>
       </section>
 
-      <section className="px-4 py-16">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            {services.map((service, index) => (
-              <ServiceCard
-                key={index}
-                title={service.title}
-                description={service.description}
-                icon={service.icon}
-              />
-            ))}
-          </div>
+      <section className="px-4 py-12 max-w-7xl mx-auto">
+        {loading && <p className="text-center">Cargando servicios...</p>}
+        {error && <p className="text-center text-red-600">{error}</p>}
+
+        {!loading && services.length === 0 && (
+          <p className="text-center">No hay servicios disponibles en este momento.</p>
+        )}
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8">
+          {services.map((service) => (
+            <ServiceCard
+              key={service._id}
+              service={service}
+              onClick={handleOpenModal}
+            />
+          ))}
         </div>
+
+        <div className="text-center mt-12">
+          <p className="text-lg mb-4">
+            ¿Tienes dudas sobre nuestros servicios o necesitas algo personalizado?
+          </p>
+          <a
+            href="/contacto"
+            className="inline-block px-6 py-2 bg-[#2f3e2e] text-white rounded hover:bg-[#3f513d] transition"
+          >
+            Contacta con nosotros
+          </a>
+        </div>
+
       </section>
+
+      {selectedService && (
+        <ServiceModal
+          service={selectedService}
+          onClose={handleCloseModal}
+          refetch={refetch}
+        />
+      )}
     </main>
   )
-} 
+}

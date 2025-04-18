@@ -1,9 +1,18 @@
-export default function ServiceCard({ title, description, icon }) {
+export default function ServiceCard({ service, onClick }) {
   return (
-    <div className="bg-white rounded-xl shadow-md p-6 text-[#2f3e2e] hover:shadow-lg hover:scale-[1.02] transition-transform duration-300">
-      <div className="text-4xl mb-4">{icon}</div>
-      <h3 className="text-xl font-semibold mb-2 font-['Playfair_Display']">{title}</h3>
-      <p className="text-sm leading-relaxed">{description}</p>
+    <div
+      onClick={() => onClick(service)}
+      className="bg-white rounded-lg shadow p-4 hover:shadow-lg transition cursor-pointer"
+    >
+      <img
+        src={service.image}
+        alt={service.title}
+        className="w-full h-48 object-cover rounded-md mb-4"
+      />
+      <h3 className="text-lg font-bold text-[#2f3e2e] mb-1">
+        {service.title}
+      </h3>
+      <p className="text-sm text-[#2f3e2e]">{service.description}</p>
     </div>
   )
-} 
+}

@@ -10,6 +10,10 @@ import Nosotros from './pages/Nosotros'
 import PlantsTrefle from './pages/PlantsTrefle'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import NuevoProducto from './pages/NuevoProducto'
+import DashboardAdmin from './pages/DashboardAdmin'
+import NuevaActividad from './pages/NuevaActividad'
+import NuevoServicio from './pages/NuevoServicio'
 
 import { Routes, Route } from 'react-router-dom'
 
@@ -29,6 +33,10 @@ function App() {
           <Route path="/contacto" element={<Contacto />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/admin/producto-nuevo" element={<NuevoProducto />} />
+          <Route path="/admin" element={<DashboardAdmin />} />
+          <Route path="/admin/nueva-actividad" element={<NuevaActividad />} />
+          <Route path="/admin/servicio-nuevo" element={<NuevoServicio />} />
         </Routes>
       </main>
       <Footer />

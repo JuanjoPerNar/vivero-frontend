@@ -7,7 +7,7 @@ import usePosts from "../hooks/usePosts"
 import { useAuth } from "../context/authContext"
 
 export default function Comunidad() {
-  const { posts, loading, error } = usePosts()
+  const { posts, loading, error, refetch } = usePosts()
   const { user } = useAuth()
   const [selectedPost, setSelectedPost] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -67,7 +67,7 @@ export default function Comunidad() {
       </section>
 
       {isModalOpen && selectedPost && (
-        <PostModal post={selectedPost} onClose={handleCloseModal} />
+        <PostModal post={selectedPost} onClose={handleCloseModal} refetch={refetch} />
       )}
     </main>
   )

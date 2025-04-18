@@ -13,26 +13,26 @@ export default function AuthProvider({ children }) {
   const db = getFirestore(app)
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const q = query(collection(db, "users"), where("uid", "==", user.uid))
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        const q = query(collection(db, "users"), where("uid", "==", firebaseUser.uid))
         const querySnapshot = await getDocs(q)
 
         if (!querySnapshot.empty) {
           const userDoc = querySnapshot.docs[0].data()
           setUser({
-            uid: user.uid,
-            email: user.email,
-            name: userDoc.name,
-            surname: userDoc.surname,
-            role: userDoc.role
+            uid: firebaseUser.uid,
+            email: firebaseUser.email,
+            name: userDoc.name || "",
+            surname: userDoc.surname || "",
+            role: userDoc.role || "user"
           })
         } else {
           setUser({
-            uid: user.uid,
-            email: user.email,
-            name: userDoc.name,
-            surname: userDoc.surname,
+            uid: firebaseUser.uid,
+            email: firebaseUser.email,
+            name: "",
+            surname: "",
             role: "user"
           })
         }

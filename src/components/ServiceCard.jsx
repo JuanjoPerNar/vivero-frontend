@@ -1,8 +1,11 @@
 export default function ServiceCard({ service, onClick }) {
+  const isClickable = typeof onClick === "function"
+
   return (
     <div
-      onClick={() => onClick(service)}
-      className="bg-white rounded-lg shadow p-4 hover:shadow-lg transition cursor-pointer"
+      onClick={isClickable ? () => onClick(service) : undefined}
+      className={`bg-white rounded-lg shadow p-4 transition 
+        ${isClickable ? 'hover:shadow-lg cursor-pointer' : 'hover:scale-[1.02]'}`}
     >
       <img
         src={service.image}

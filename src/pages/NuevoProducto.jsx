@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import api from "../utils/api"
 import { uploadImage } from "../services/uploadImage"
+import api from "../utils/api"
 
-export default function NuevoProducto({ editData, onSuccess }) {
+export default function NuevoProducto({ editData = null, onSuccess }) {
   const navigate = useNavigate()
 
   const [name, setName] = useState("")
@@ -14,62 +14,17 @@ export default function NuevoProducto({ editData, onSuccess }) {
   const [imageFile, setImageFile] = useState(null)
   const [previewUrl, setPreviewUrl] = useState("")
   const [error, setError] = useState("")
-  const [success, setSuccess] = useState("")
-
-  const isEditing = !!editData
 
   useEffect(() => {
-    if (isEditing) {
-      setName(editData.name || "")
-      setDescription(editData.description || "")
-      setPrice(editData.price || "")
-      setCategory(editData.category || "")
-      setSize(editData.size || "")
-      setPreviewUrl(editData.image || "")
+    if (editData) {
+      setName(editData.name)
+      setDescription(editData.description)
+      setPrice(editData.price)
+      setCategory(editData.category)
+      setSize(editData.size)
+      setPreviewUrl(editData.image)
     }
-  }, [editData, isEditing])
-
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    setError("")
-    setSuccess("")
-
-    try {
-      let imageUrl = previewUrl
-
-      if (imageFile) {
-        imageUrl = await uploadImage(imageFile)
-      }
-
-      const productData = {
-        name,
-        description,
-        price,
-        category,
-        size,
-        image: imageUrl,
-      }
-
-      if (isEditing) {
-        await api.put(`/products/${editData._id}`, productData)
-        setSuccess("Producto actualizado correctamente")
-      } else {
-        await api.post("/products", productData)
-        setSuccess("Producto creado correctamente")
-      }
-
-      setTimeout(() => {
-        if (onSuccess) {
-          onSuccess()
-        } else {
-          navigate("/catalogo")
-        }
-      }, 1500)
-    } catch (err) {
-      console.error("Error al guardar el producto:", err)
-      setError("Hubo un error al guardar el producto.")
-    }
-  }
+  }, [editData])
 
   const handleImageChange = (e) => {
     const file = e.target.files[0]
@@ -78,108 +33,154 @@ export default function NuevoProducto({ editData, onSuccess }) {
       setImageFile(null)
       setPreviewUrl("")
     } else {
+      setError("")
       setImageFile(file)
       setPreviewUrl(URL.createObjectURL(file))
-      setError("")
+    }
+  }
+
+  const handleRemoveImage = () => {
+    setImageFile(null)
+    setPreviewUrl("")
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setError("")
+
+    try {
+      let imageUrl = previewUrl
+
+      if (imageFile) {
+        imageUrl = await uploadImage(imageFile, "products")
+      }
+
+      const newProduct = {
+        name,
+        description,
+        price,
+        category,
+        size,
+        image: imageUrl,
+      }
+
+      if (editData) {
+        await api.put(`/products/${editData._id}`, newProduct)
+      } else {
+        await api.post("/products", newProduct)
+      }
+
+      if (onSuccess) {
+        onSuccess()
+      } else {
+        navigate("/catalogo")
+      }
+    } catch (err) {
+      console.error("Error al guardar producto:", err)
+      setError("Hubo un error al guardar el producto.")
     }
   }
 
   return (
-    <main className="min-h-screen bg-[#F4F9EF] py-10 px-4">
-      <div className="max-w-xl mx-auto bg-white p-6 rounded-lg shadow">
-        <h2 className="text-2xl font-bold text-[#2f3e2e] mb-4 text-center">
-          {isEditing ? "Editar producto" : "Nuevo producto"}
-        </h2>
+    <div className="max-w-xl mx-auto bg-white p-6 rounded-lg shadow mt-6">
+      <h2 className="text-2xl font-bold text-[#2f3e2e] mb-4 text-center">
+        {editData ? "Editar producto" : "Nuevo producto"}
+      </h2>
 
-        {error && <p className="text-red-600 mb-4 text-sm text-center">{error}</p>}
-        {success && <p className="text-green-600 mb-4 text-sm text-center">{success}</p>}
+      {error && <p className="text-red-600 mb-4 text-sm text-center">{error}</p>}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="text"
-            placeholder="Nombre"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-            className="w-full border p-3 rounded"
-          />
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <input
+          type="text"
+          placeholder="Nombre"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+          className="w-full border border-[#ccc] p-3 rounded"
+        />
 
-          <textarea
-            placeholder="Descripción"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required
-            rows="5"
-            className="w-full border p-3 rounded"
-          ></textarea>
+        <textarea
+          placeholder="Descripción"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          required
+          rows="5"
+          className="w-full border border-[#ccc] p-3 rounded"
+        ></textarea>
 
-          <input
-            type="number"
-            step="0.01"
-            placeholder="Precio (€)"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            required
-            className="w-full border p-3 rounded"
-          />
+        <input
+          type="number"
+          placeholder="Precio"
+          value={price}
+          onChange={(e) => setPrice(e.target.value)}
+          required
+          className="w-full border border-[#ccc] p-3 rounded"
+        />
 
-          <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            required
-            className="w-full border p-3 rounded"
-          >
-            <option value="">Selecciona categoría</option>
-            <option value="planta">Planta</option>
-            <option value="maceta">Maceta</option>
-            <option value="herramienta">Herramienta</option>
-            <option value="fertilizante">Fertilizante</option>
-            <option value="kit">Kit</option>
-          </select>
+        <select
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          required
+          className="w-full border border-[#ccc] p-3 rounded"
+        >
+          <option value="">Selecciona una categoría</option>
+          <option value="interior">Plantas de interior</option>
+          <option value="exterior">Plantas de exterior</option>
+          <option value="aromaticas">Plantas aromáticas</option>
+          <option value="cactus">Cactus y suculentas</option>
+        </select>
 
-          <input
-            type="text"
-            placeholder="Tamaño (ej. S, M, L)"
-            value={size}
-            onChange={(e) => setSize(e.target.value)}
-            required
-            className="w-full border p-3 rounded"
-          />
+        <select
+          value={size}
+          onChange={(e) => setSize(e.target.value)}
+          required
+          className="w-full border border-[#ccc] p-3 rounded"
+        >
+          <option value="">Selecciona un tamaño</option>
+          <option value="pequeño">Pequeño</option>
+          <option value="mediano">Mediano</option>
+          <option value="grande">Grande</option>
+        </select>
 
-          <div>
-            <input
-              id="imageInput"
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              className="hidden"
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
+          className="hidden"
+          id="imageInput"
+        />
+        <label
+          htmlFor="imageInput"
+          className="block w-full text-center bg-[#e7efe1] border border-[#ccc] text-[#2f3e2e] py-2 rounded cursor-pointer hover:bg-[#dcebd6] transition"
+        >
+          {imageFile ? imageFile.name : previewUrl ? "Imagen cargada" : "Seleccionar imagen"}
+        </label>
+
+        {previewUrl && (
+          <div className="relative text-center">
+            <img
+              src={previewUrl}
+              alt="Vista previa"
+              className="w-full h-48 object-cover rounded mt-2"
             />
-            <label
-              htmlFor="imageInput"
-              className="block w-full text-center bg-[#e7efe1] border border-[#ccc] text-[#2f3e2e] py-2 rounded cursor-pointer hover:bg-[#dcebd6] transition"
+            <button
+              type="button"
+              onClick={handleRemoveImage}
+              className="absolute top-2 right-2 bg-white text-red-600 font-bold text-lg rounded-full w-8 h-8 flex items-center justify-center shadow hover:bg-red-100 cursor-pointer transition"
+              aria-label="Eliminar imagen"
             >
-              {imageFile ? imageFile.name : "Seleccionar imagen"}
-            </label>
+              &times;
+            </button>
           </div>
+        )}
 
-          {previewUrl && (
-            <div className="text-center mt-4">
-              <img
-                src={previewUrl}
-                alt="Vista previa"
-                className="w-full h-64 object-cover rounded"
-              />
-            </div>
-          )}
-
-          <button
-            type="submit"
-            className="w-full bg-[#2f3e2e] text-white py-2 rounded hover:bg-[#3f513d] transition cursor-pointer"
-          >
-            {isEditing ? "Actualizar" : "Crear"}
-          </button>
-        </form>
-      </div>
-    </main>
+        <button
+          type="submit"
+          className="w-full bg-[#2f3e2e] text-white py-2 rounded hover:bg-[#3f513d] transition cursor-pointer"
+        >
+          {editData ? "Guardar cambios" : "Crear producto"}
+        </button>
+      </form>
+    </div>
   )
 }

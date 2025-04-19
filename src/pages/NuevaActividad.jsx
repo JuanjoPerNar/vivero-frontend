@@ -16,7 +16,7 @@ export default function NuevoActividad({ editData = null, onSuccess }) {
     if (editData) {
       setTitle(editData.title)
       setDescription(editData.description)
-      setDate(editData.date?.split("T")[0]) // Para input type="date"
+      setDate(editData.date?.split("T")[0])
       setPreviewUrl(editData.image)
     }
   }, [editData])
@@ -32,6 +32,11 @@ export default function NuevoActividad({ editData = null, onSuccess }) {
       setImageFile(file)
       setPreviewUrl(URL.createObjectURL(file))
     }
+  }
+
+  const handleRemoveImage = () => {
+    setImageFile(null)
+    setPreviewUrl("")
   }
 
   const handleSubmit = async (e) => {
@@ -119,11 +124,21 @@ export default function NuevoActividad({ editData = null, onSuccess }) {
         </label>
 
         {previewUrl && (
-          <img
-            src={previewUrl}
-            alt="Vista previa"
-            className="w-full h-48 object-cover rounded mt-2"
-          />
+          <div className="relative text-center">
+            <img
+              src={previewUrl}
+              alt="Vista previa"
+              className="w-full h-48 object-cover rounded mt-2"
+            />
+            <button
+              type="button"
+              onClick={handleRemoveImage}
+              className="absolute top-2 right-2 bg-white text-red-600 font-bold text-lg rounded-full w-8 h-8 flex items-center justify-center shadow hover:bg-red-100 cursor-pointer transition"
+              aria-label="Eliminar imagen"
+            >
+              &times;
+            </button>
+          </div>
         )}
 
         <button

@@ -5,154 +5,159 @@ import api from "../utils/api"
 
 export default function NuevoServicio({ editData = null, onSuccess }) {
   const navigate = useNavigate()
-  const isEditing = Boolean(editData)
 
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
   const [type, setType] = useState("")
   const [imageFile, setImageFile] = useState(null)
-  const [imagePreview, setImagePreview] = useState("")
+  const [previewUrl, setPreviewUrl] = useState("")
   const [error, setError] = useState("")
-  const [success, setSuccess] = useState("")
 
   useEffect(() => {
     if (editData) {
       setTitle(editData.title)
       setDescription(editData.description)
       setType(editData.type)
-      setImagePreview(editData.image)
+      setPreviewUrl(editData.image)
     }
   }, [editData])
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0]
+    if (file && file.size > 2 * 1024 * 1024) {
+      setError("La imagen debe pesar menos de 2MB.")
+      setImageFile(null)
+      setPreviewUrl("")
+    } else {
+      setError("")
+      setImageFile(file)
+      setPreviewUrl(URL.createObjectURL(file))
+    }
+  }
+
+  const handleRemoveImage = () => {
+    setImageFile(null)
+    setPreviewUrl("")
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError("")
-    setSuccess("")
 
     try {
-      let imageUrl = imagePreview
+      let imageUrl = previewUrl
 
       if (imageFile) {
         imageUrl = await uploadImage(imageFile, "services")
       }
 
-      const newData = { title, description, type, image: imageUrl }
-
-      if (isEditing) {
-        await api.put(`/services/${editData._id}`, newData)
-        setSuccess("Servicio actualizado correctamente")
-      } else {
-        await api.post("/services", newData)
-        setSuccess("Servicio creado correctamente")
+      const newService = {
+        title,
+        description,
+        type,
+        image: imageUrl,
       }
 
-      setTimeout(() => {
-        if (onSuccess) {
-          onSuccess()
-        } else {
-          navigate("/servicios")
-        }
-      }, 1500)
+      if (editData) {
+        await api.put(`/services/${editData._id}`, newService)
+      } else {
+        await api.post("/services", newService)
+      }
+
+      if (onSuccess) {
+        onSuccess()
+      } else {
+        navigate("/servicios")
+      }
     } catch (err) {
-      console.error("Error al guardar el servicio:", err)
+      console.error("Error al guardar servicio:", err)
       setError("Hubo un error al guardar el servicio.")
     }
   }
 
   return (
-    <main className="min-h-screen bg-[#F4F9EF] py-10 px-4">
-      <div className="max-w-xl mx-auto bg-white p-6 rounded-lg shadow">
-        <h2 className="text-2xl font-bold text-[#2f3e2e] mb-4 text-center">
-          {isEditing ? "Editar servicio" : "Crear nuevo servicio"}
-        </h2>
+    <div className="max-w-xl mx-auto bg-white p-6 rounded-lg shadow mt-6">
+      <h2 className="text-2xl font-bold text-[#2f3e2e] mb-4 text-center">
+        {editData ? "Editar servicio" : "Nuevo servicio"}
+      </h2>
 
-        {error && <p className="text-red-600 mb-4 text-sm text-center">{error}</p>}
-        {success && <p className="text-green-600 mb-4 text-sm text-center">{success}</p>}
+      {error && <p className="text-red-600 mb-4 text-sm text-center">{error}</p>}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="text"
-            placeholder="Título"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-            className="w-full border border-[#ccc] p-3 rounded"
-          />
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <input
+          type="text"
+          placeholder="Título"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          required
+          className="w-full border border-[#ccc] p-3 rounded"
+        />
 
-          <textarea
-            placeholder="Descripción"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required
-            rows="5"
-            className="w-full border border-[#ccc] p-3 rounded"
-          ></textarea>
+        <textarea
+          placeholder="Descripción"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          required
+          rows="5"
+          className="w-full border border-[#ccc] p-3 rounded"
+        ></textarea>
 
-          <select
-            value={type}
-            onChange={(e) => setType(e.target.value)}
-            required
-            className="w-full border border-[#ccc] p-3 rounded"
-          >
-            <option value="">Selecciona el tipo de servicio</option>
-            <option value="jardines">Jardines</option>
-            <option value="verticales">Verticales</option>
-            <option value="mantenimiento">Mantenimiento</option>
-            <option value="riego">Riego</option>
-            <option value="asesoramiento">Asesoramiento</option>
-            <option value="alquiler">Alquiler</option>
-            <option value="reciclaje">Reciclaje</option>
-            <option value="rescate">Rescate</option>
-          </select>
+        <select
+          value={type}
+          onChange={(e) => setType(e.target.value)}
+          required
+          className="w-full border border-[#ccc] p-3 rounded"
+        >
+          <option value="">Selecciona un tipo de servicio</option>
+          <option value="jardines">Diseño de jardines</option>
+          <option value="verticales">Jardines verticales</option>
+          <option value="mantenimiento">Mantenimiento</option>
+          <option value="riego">Sistemas de riego</option>
+          <option value="asesoramiento">Asesoramiento</option>
+          <option value="alquiler">Alquiler de plantas</option>
+          <option value="reciclaje">Reciclaje de macetas</option>
+          <option value="rescate">Rescate de plantas</option>
+        </select>
 
-          <div>
-            <label htmlFor="imageInput" className="block text-sm font-medium text-[#2f3e2e] mb-1">
-              Imagen (máximo 2MB)
-            </label>
-            <input
-              id="imageInput"
-              type="file"
-              accept="image/*"
-              onChange={(e) => {
-                const file = e.target.files[0]
-                if (file && file.size > 2 * 1024 * 1024) {
-                  setError("La imagen debe pesar menos de 2MB.")
-                  setImageFile(null)
-                  setImagePreview("")
-                } else {
-                  setError("")
-                  setImageFile(file)
-                  setImagePreview(URL.createObjectURL(file))
-                }
-              }}
-              className="hidden"
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
+          className="hidden"
+          id="imageInput"
+        />
+        <label
+          htmlFor="imageInput"
+          className="block w-full text-center bg-[#e7efe1] border border-[#ccc] text-[#2f3e2e] py-2 rounded cursor-pointer hover:bg-[#dcebd6] transition"
+        >
+          {imageFile ? imageFile.name : previewUrl ? "Imagen cargada" : "Seleccionar imagen"}
+        </label>
+
+        {previewUrl && (
+          <div className="relative text-center">
+            <img
+              src={previewUrl}
+              alt="Vista previa"
+              className="w-full h-48 object-cover rounded mt-2"
             />
-            <label
-              htmlFor="imageInput"
-              className="block w-full text-center bg-[#e7efe1] border border-[#ccc] text-[#2f3e2e] py-2 rounded cursor-pointer hover:bg-[#dcebd6] transition"
+            <button
+              type="button"
+              onClick={handleRemoveImage}
+              className="absolute top-2 right-2 bg-white text-red-600 font-bold text-lg rounded-full w-8 h-8 flex items-center justify-center shadow hover:bg-red-100 cursor-pointer transition"
+              aria-label="Eliminar imagen"
             >
-              {imageFile ? imageFile.name : "Seleccionar imagen"}
-            </label>
+              &times;
+            </button>
           </div>
+        )}
 
-          {imagePreview && (
-            <div className="mt-4 text-center">
-              <img
-                src={imagePreview}
-                alt="Vista previa"
-                className="w-full h-56 object-cover rounded shadow"
-              />
-            </div>
-          )}
-
-          <button
-            type="submit"
-            className="w-full bg-[#2f3e2e] text-white py-2 rounded hover:bg-[#3f513d] transition cursor-pointer"
-          >
-            {isEditing ? "Actualizar servicio" : "Crear servicio"}
-          </button>
-        </form>
-      </div>
-    </main>
+        <button
+          type="submit"
+          className="w-full bg-[#2f3e2e] text-white py-2 rounded hover:bg-[#3f513d] transition cursor-pointer"
+        >
+          {editData ? "Guardar cambios" : "Crear servicio"}
+        </button>
+      </form>
+    </div>
   )
 }

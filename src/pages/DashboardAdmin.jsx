@@ -25,7 +25,7 @@ export default function DashboardAdmin() {
     },
     {
       title: "Nueva Actividad",
-      description: "Agrega una nueva actividad o evento.",
+      description: "Agrega una nueva actividad.",
       link: "/admin/nueva-actividad",
     },
     {

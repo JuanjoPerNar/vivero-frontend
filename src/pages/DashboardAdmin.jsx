@@ -25,7 +25,7 @@ export default function DashboardAdmin() {
     },
     {
       title: "Nueva Actividad",
-      description: "Agrega una nueva actividad o taller.",
+      description: "Agrega una nueva actividad o evento.",
       link: "/admin/nueva-actividad",
     },
     {
@@ -37,6 +37,11 @@ export default function DashboardAdmin() {
       title: "Publicaciones",
       description: "Revisa y gestiona las publicaciones de la comunidad.",
       link: "/comunidad",
+    },
+    {
+      title: "Mensajes de contacto",
+      description: "Consulta los mensajes enviados por los usuarios.",
+      link: "/admin/mensajes",
     },
   ]
 

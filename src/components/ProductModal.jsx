@@ -74,7 +74,7 @@ export default function ProductModal({ product, onClose, refetch }) {
                 </button>
                 <button
                   onClick={handleDelete}
-                  className="px-4 py-2 rounded text-sm font-medium text-white bg-red-500 hover:bg-red-600 cursor-pointer"
+                  className="px-4 py-2 rounded text-sm font-medium text-white bg-red-400 hover:bg-red-500 cursor-pointer"
                 >
                   Eliminar
                 </button>

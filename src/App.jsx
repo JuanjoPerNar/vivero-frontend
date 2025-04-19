@@ -14,6 +14,7 @@ import NuevoProducto from './pages/NuevoProducto'
 import DashboardAdmin from './pages/DashboardAdmin'
 import NuevaActividad from './pages/NuevaActividad'
 import NuevoServicio from './pages/NuevoServicio'
+import Mensajes from './pages/Mensajes'
 
 import { Routes, Route } from 'react-router-dom'
 
@@ -37,6 +38,7 @@ function App() {
           <Route path="/admin" element={<DashboardAdmin />} />
           <Route path="/admin/nueva-actividad" element={<NuevaActividad />} />
           <Route path="/admin/servicio-nuevo" element={<NuevoServicio />} />
+          <Route path="/admin/mensajes" element={<Mensajes />} />
         </Routes>
       </main>
       <Footer />

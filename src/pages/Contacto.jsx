@@ -1,112 +1,81 @@
 import { useState } from "react"
-import { motion } from "framer-motion"
+import api from "../utils/api"
 
 export default function Contacto() {
-  const [formData, setFormData] = useState({
-    nombre: "",
-    email: "",
-    mensaje: ""
-  })
+  const [name, setName] = useState("")
+  const [email, setEmail] = useState("")
+  const [message, setMessage] = useState("")
+  const [success, setSuccess] = useState("")
+  const [error, setError] = useState("")
 
-  const [formError, setFormError] = useState("")
-  const [formSuccess, setFormSuccess] = useState("")
-
-  const handleChange = (e) => {
-    const { name, value } = e.target
-    setFormData({ ...formData, [name]: value })
-  }
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
+    setError("")
+    setSuccess("")
 
-    if (!formData.nombre || !formData.email || !formData.mensaje) {
-      setFormError("Todos los campos son obligatorios.")
-      setFormSuccess("")
+    if (!name || !email || !message) {
+      setError("Todos los campos son obligatorios.")
       return
     }
 
-    console.log("Datos enviados:", formData)
-
-    setFormSuccess("Mensaje enviado correctamente. ¡Gracias por contactarnos!")
-    setFormError("")
-    setFormData({ nombre: "", email: "", mensaje: "" })
+    try {
+      await api.post("/contacts", { name, email, message })
+      setSuccess("Mensaje enviado correctamente. Gracias por contactarnos.")
+      setName("")
+      setEmail("")
+      setMessage("")
+    } catch (err) {
+      console.error("Error al enviar el mensaje:", err)
+      setError("Hubo un error al enviar el mensaje. Inténtalo de nuevo.")
+    }
   }
 
   return (
-    <main className="bg-[#F9FAF8] text-[#1C2B2D] font-['Playfair_Display']">
-      {/* HERO */}
-      <section className="min-h-[40vh] bg-gradient-to-r from-[#EDF4EC] to-[#E2EFE3] flex flex-col items-center justify-center px-6 py-16 text-center">
-        <motion.h1
-          className="text-3xl md:text-4xl font-bold mb-4"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-        >
+    <main className="min-h-screen bg-[#F4F9EF] py-16 px-4">
+      <div className="max-w-xl mx-auto bg-white p-8 rounded-lg shadow">
+        <h1 className="text-3xl font-bold mb-6 text-center text-[#2f3e2e]">
           Contáctanos
-        </motion.h1>
-        <motion.p
-          className="text-base md:text-lg max-w-2xl"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3, duration: 1 }}
-        >
-          ¿Tienes dudas sobre nuestras plantas, servicios o eventos? Escríbenos y nos pondremos en contacto contigo.
-        </motion.p>
-      </section>
+        </h1>
 
-      {/* FORMULARIO */}
-      <section className="px-4 py-16">
-        <div className="max-w-3xl mx-auto bg-white shadow rounded-lg p-6">
-          <h2 className="text-2xl font-semibold text-center mb-6">Formulario de contacto</h2>
+        {success && <p className="text-green-600 mb-4 text-sm text-center">{success}</p>}
+        {error && <p className="text-red-600 mb-4 text-sm text-center">{error}</p>}
 
-          {formError && <p className="text-red-600 mb-4 text-sm text-center">{formError}</p>}
-          {formSuccess && <p className="text-green-700 mb-4 text-sm text-center">{formSuccess}</p>}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            type="text"
+            placeholder="Tu nombre"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+            className="w-full border border-[#ccc] p-3 rounded"
+          />
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block mb-1 text-sm font-medium text-[#2f3e2e]">Nombre completo</label>
-              <input
-                type="text"
-                name="nombre"
-                value={formData.nombre}
-                onChange={handleChange}
-                className="w-full border border-[#2f3e2e] rounded px-4 py-2 text-sm text-[#2f3e2e]"
-                required
-              />
-            </div>
-            <div>
-              <label className="block mb-1 text-sm font-medium text-[#2f3e2e]">Correo electrónico</label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="w-full border border-[#2f3e2e] rounded px-4 py-2 text-sm text-[#2f3e2e]"
-                required
-              />
-            </div>
-            <div>
-              <label className="block mb-1 text-sm font-medium text-[#2f3e2e]">Mensaje</label>
-              <textarea
-                name="mensaje"
-                value={formData.mensaje}
-                onChange={handleChange}
-                rows="5"
-                className="w-full border border-[#2f3e2e] rounded px-4 py-2 text-sm text-[#2f3e2e]"
-                required
-              ></textarea>
-            </div>
-            <div className="text-center">
-              <button
-                type="submit"
-                className="bg-[#2f3e2e] text-white px-6 py-2 rounded hover:bg-[#3f513d] transition cursor-pointer"
-              >
-                Enviar mensaje
-              </button>
-            </div>
-          </form>
-        </div>
-      </section>
+          <input
+            type="email"
+            placeholder="Tu email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="w-full border border-[#ccc] p-3 rounded"
+          />
+
+          <textarea
+            placeholder="Tu mensaje"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            rows="5"
+            required
+            className="w-full border border-[#ccc] p-3 rounded"
+          ></textarea>
+
+          <button
+            type="submit"
+            className="w-full bg-[#2f3e2e] text-white py-2 rounded hover:bg-[#3f513d] transition cursor-pointer"
+          >
+            Enviar mensaje
+          </button>
+        </form>
+      </div>
     </main>
   )
-} 
+}

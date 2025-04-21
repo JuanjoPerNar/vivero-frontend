@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { motion } from "framer-motion"
 import { useAuth } from "../context/authContext"
 import PostCard from "../components/PostCard"
 import PostModal from "../components/PostModal"
@@ -19,10 +20,22 @@ export default function Perfil() {
   return (
     <main className="min-h-screen bg-[#F4F9EF] text-[#2f3e2e] font-['Playfair_Display']">
       <section className="min-h-[30vh] bg-gradient-to-r from-[#E8F3E4] to-[#D8EAD3] flex flex-col items-center justify-center px-6 py-16 text-center">
-        <h1 className="text-3xl md:text-4xl font-bold mb-4">Mi perfil</h1>
-        <p className="text-base md:text-lg max-w-2xl">
+        <motion.h1
+          className="text-3xl md:text-4xl font-bold mb-4"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+        >
+          Mi perfil
+        </motion.h1>
+        <motion.p
+          className="text-base md:text-lg max-w-2xl"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3, duration: 1 }}
+        >
           Consulta y actualiza tus datos, y revisa las publicaciones que has hecho en la comunidad.
-        </p>
+        </motion.p>
       </section>
 
       <section className="max-w-2xl mx-auto bg-white rounded-lg shadow p-6 mt-12">

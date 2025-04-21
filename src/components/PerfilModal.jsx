@@ -1,116 +1,120 @@
-import { useState } from "react"
-import { motion } from "framer-motion"
+import { useState, useEffect } from "react"
+import { useAuth } from "../context/authContext"
 import {
   changeUserEmail,
   changeUserPassword,
+  deleteUserAccount,
 } from "../services/authService"
 
-export default function PerfilModal({ user, onClose }) {
-  const [email, setEmail] = useState(user?.email || "")
+export default function PerfilModal({ onClose }) {
+  const { user } = useAuth()
+  const [newEmail, setNewEmail] = useState(user.email)
   const [currentPassword, setCurrentPassword] = useState("")
   const [newPassword, setNewPassword] = useState("")
   const [success, setSuccess] = useState("")
   const [error, setError] = useState("")
-  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden"
+    return () => {
+      document.body.style.overflow = "auto"
+    }
+  }, [])
 
   const handleUpdate = async (e) => {
     e.preventDefault()
-    setError("")
     setSuccess("")
-    setLoading(true)
+    setError("")
 
     try {
-      if (email !== user.email) {
-        await changeUserEmail(currentPassword, email)
-        setSuccess("Correo electrónico actualizado correctamente.")
+      if (newEmail !== user.email) {
+        await changeUserEmail(currentPassword, newEmail)
+        setSuccess("Correo actualizado correctamente.")
       }
 
       if (newPassword) {
         await changeUserPassword(currentPassword, newPassword)
-        setSuccess((prev) =>
-          prev ? `${prev} Contraseña actualizada.` : "Contraseña actualizada."
-        )
+        setSuccess("Contraseña actualizada correctamente.")
       }
-
-      setCurrentPassword("")
-      setNewPassword("")
     } catch (err) {
-      console.error("Error al actualizar perfil:", err)
-      setError(err.message || "Hubo un error al actualizar el perfil.")
-    } finally {
-      setLoading(false)
+      console.error(err)
+      setError("Error al actualizar perfil. " + err.message)
     }
   }
 
+  const handleDelete = async () => {
+    const confirmed = window.confirm("¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.")
+    if (!confirmed) return
+  
+    const password = window.prompt("Por seguridad, introduce tu contraseña actual:")
+  
+    if (!password) {
+      setError("Se requiere la contraseña para eliminar la cuenta.")
+      return
+    }
+  
+    try {
+      await deleteUserAccount(password)
+      window.location.href = "/"
+    } catch (err) {
+      console.error(err)
+      setError("Error al eliminar cuenta. " + err.message)
+    }
+  }
+  
+
   return (
-    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.9 }}
-        className="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative"
-      >
-        <button
-          onClick={onClose}
-          className="absolute top-3 right-3 text-[#2f3e2e] text-xl font-bold hover:text-red-600"
-        >
-          &times;
-        </button>
+    <div className="fixed inset-0 bg-black/10 backdrop-blur-sm flex items-center justify-center z-50">
+      <div className="bg-white p-6 rounded-lg shadow max-w-md w-full relative">
+        <h2 className="text-xl font-bold mb-4 text-[#2f3e2e]">Editar perfil</h2>
 
-        <h2 className="text-2xl font-bold text-center text-[#2f3e2e] mb-4">
-          Editar perfil
-        </h2>
-
-        {success && <p className="text-green-600 text-sm text-center mb-2">{success}</p>}
-        {error && <p className="text-red-600 text-sm text-center mb-2">{error}</p>}
+        {error && <p className="text-red-600 mb-2 text-sm">{error}</p>}
+        {success && <p className="text-green-600 mb-2 text-sm">{success}</p>}
 
         <form onSubmit={handleUpdate} className="space-y-4">
-          <div>
-            <label className="block text-sm text-[#2f3e2e] font-medium mb-1">
-              Correo electrónico
-            </label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-2 border rounded"
-            />
-          </div>
+          <input
+            type="email"
+            placeholder="Nuevo email"
+            value={newEmail}
+            onChange={(e) => setNewEmail(e.target.value)}
+            className="w-full border border-[#ccc] p-2 rounded"
+          />
 
-          <div>
-            <label className="block text-sm text-[#2f3e2e] font-medium mb-1">
-              Nueva contraseña (opcional)
-            </label>
-            <input
-              type="password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              className="w-full p-2 border rounded"
-            />
-          </div>
+          <input
+            type="password"
+            placeholder="Contraseña actual"
+            value={currentPassword}
+            onChange={(e) => setCurrentPassword(e.target.value)}
+            className="w-full border border-[#ccc] p-2 rounded"
+          />
 
-          <div>
-            <label className="block text-sm text-[#2f3e2e] font-medium mb-1">
-              Contraseña actual <span className="text-red-600">*</span>
-            </label>
-            <input
-              type="password"
-              value={currentPassword}
-              onChange={(e) => setCurrentPassword(e.target.value)}
-              required
-              className="w-full p-2 border rounded"
-            />
-          </div>
+          <input
+            type="password"
+            placeholder="Nueva contraseña"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            className="w-full border border-[#ccc] p-2 rounded"
+          />
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-[#2f3e2e] text-white py-2 rounded hover:bg-[#3f513d] transition cursor-pointer"
-          >
-            {loading ? "Guardando cambios..." : "Guardar cambios"}
+          <button type="submit" className="w-full bg-[#2f3e2e] text-white py-2 rounded hover:bg-[#3f513d] transition cursor-pointer">
+            Guardar cambios
           </button>
         </form>
-      </motion.div>
+
+        <button
+          onClick={handleDelete}
+          className="mt-4 w-full bg-red-500 text-white py-2 rounded hover:bg-red-600 transition cursor-pointer"
+        >
+          Eliminar cuenta
+        </button>
+
+        <button
+          onClick={onClose}
+          className="absolute top-2 right-2 text-[#2f3e2e] text-lg font-bold hover:text-red-600"
+        >
+          ×
+        </button>
+      </div>
     </div>
   )
 }

@@ -41,7 +41,6 @@ export default function Contacto() {
 
   return (
     <main className="min-h-screen bg-[#F4F9EF] text-[#2f3e2e] font-['Playfair_Display']">
-      {/* Cabecera con framer-motion */}
       <section className="min-h-[30vh] bg-gradient-to-r from-[#E8F3E4] to-[#D8EAD3] flex flex-col items-center justify-center px-6 py-16 text-center">
         <motion.h1
           className="text-3xl md:text-4xl font-bold mb-4"
@@ -61,7 +60,6 @@ export default function Contacto() {
         </motion.p>
       </section>
 
-      {/* Formulario */}
       <section className="px-4 py-12 max-w-xl mx-auto">
         <div className="bg-white p-8 rounded-lg shadow">
           <h2 className="text-3xl font-bold mb-6 text-center text-[#2f3e2e]">

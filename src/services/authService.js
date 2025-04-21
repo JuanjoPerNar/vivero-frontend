@@ -6,8 +6,9 @@ import {
   updatePassword,
   reauthenticateWithCredential,
   EmailAuthProvider,
+  deleteUser,
 } from "firebase/auth"
-import { doc, setDoc, getDoc } from "firebase/firestore"
+import { doc, setDoc, getDoc, deleteDoc } from "firebase/firestore"
 import { auth, db } from "../firebase/firebaseConfig"
 
 export const registerUser = async (email, password, name, surname) => {
@@ -48,7 +49,6 @@ export const changeUserEmail = async (currentPassword, newEmail) => {
   if (!user) throw new Error("No hay ningún usuario autenticado.")
 
   const credential = EmailAuthProvider.credential(user.email, currentPassword)
-
   await reauthenticateWithCredential(user, credential)
   await updateEmail(user, newEmail)
 }
@@ -58,7 +58,16 @@ export const changeUserPassword = async (currentPassword, newPassword) => {
   if (!user) throw new Error("No hay ningún usuario autenticado.")
 
   const credential = EmailAuthProvider.credential(user.email, currentPassword)
-
   await reauthenticateWithCredential(user, credential)
   await updatePassword(user, newPassword)
+}
+
+export const deleteUserAccount = async (currentPassword) => {
+  const user = auth.currentUser
+  if (!user) throw new Error("No hay ningún usuario autenticado.")
+
+  const credential = EmailAuthProvider.credential(user.email, currentPassword)
+  await reauthenticateWithCredential(user, credential)
+  await deleteDoc(doc(db, "users", user.uid))
+  await deleteUser(user)
 }

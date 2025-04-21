@@ -15,6 +15,9 @@ import DashboardAdmin from './pages/DashboardAdmin'
 import NuevaActividad from './pages/NuevaActividad'
 import NuevoServicio from './pages/NuevoServicio'
 import Mensajes from './pages/Mensajes'
+import PoliticaPrivacidad from './pages/PoliticaPrivacidad'
+import PoliticaCookies from './pages/PoliticaCookies'
+import AvisoLegal from './pages/AvisoLegal'
 
 import { Routes, Route } from 'react-router-dom'
 
@@ -39,6 +42,9 @@ function App() {
           <Route path="/admin/nueva-actividad" element={<NuevaActividad />} />
           <Route path="/admin/servicio-nuevo" element={<NuevoServicio />} />
           <Route path="/admin/mensajes" element={<Mensajes />} />
+          <Route path="/politica-privacidad" element={<PoliticaPrivacidad />} />
+          <Route path="/politica-cookies" element={<PoliticaCookies />} />
+          <Route path="/aviso-legal" element={<AvisoLegal />} />
         </Routes>
       </main>
       <Footer />

@@ -11,7 +11,7 @@ export default function Header() {
   const location = useLocation()
   const menuRef = useRef(null)
   const { user } = useAuth()
-  const isLoggedIn = user !== null
+  const isLoggedIn = !!user && user !== null
 
   useEffect(() => {
     setActiveMenu(null)
@@ -129,22 +129,31 @@ export default function Header() {
               onClick={() => toggleMenu('cuenta')}
               className={`cursor-pointer text-sm font-semibold ${activeMenu === 'cuenta' ? 'text-green-800 font-bold' : 'hover:text-green-800'}`}
             >
-              {user?.name ? `Mi perfil (${user.name.split(" ")[0]})` : "Cuenta"}
+              {isLoggedIn && user?.name ? `Mi perfil (${user.name.split(" ")[0]})` : "Cuenta"}
             </button>
             {activeMenu === 'cuenta' && (
               <ul className="absolute right-0 bg-[#f0f8e2] border border-[#d0e2c2] rounded-xl shadow-lg mt-2 w-44 text-left z-10">
-                <li><Link to="/perfil" className="block px-4 py-2 hover:bg-[#e5f3d5] rounded-t-xl">Mi perfil</Link></li>
-                <li>
-                  <button
-                    onClick={async () => {
-                      await logoutUser()
-                      window.location.href = "/login"
-                    }}
-                    className="block w-full text-left px-4 py-2 hover:bg-[#e5f3d5] rounded-b-xl cursor-pointer"
-                  >
-                    Cerrar sesión
-                  </button>
-                </li>
+                {isLoggedIn ? (
+                  <>
+                    <li><Link to="/perfil" className="block px-4 py-2 hover:bg-[#e5f3d5] rounded-t-xl">Mi perfil</Link></li>
+                    <li>
+                      <button
+                        onClick={async () => {
+                          await logoutUser()
+                          window.location.href = "/login"
+                        }}
+                        className="block w-full text-left px-4 py-2 hover:bg-[#e5f3d5] rounded-b-xl cursor-pointer"
+                      >
+                        Cerrar sesión
+                      </button>
+                    </li>
+                  </>
+                ) : (
+                  <>
+                    <li><Link to="/login" className="block px-4 py-2 hover:bg-[#e5f3d5] rounded-t-xl">Iniciar sesión</Link></li>
+                    <li><Link to="/register" className="block px-4 py-2 hover:bg-[#e5f3d5] rounded-b-xl">Registrarse</Link></li>
+                  </>
+                )}
               </ul>
             )}
           </div>

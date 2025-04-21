@@ -1,4 +1,12 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth"
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  updateEmail,
+  updatePassword,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
+} from "firebase/auth"
 import { doc, setDoc, getDoc } from "firebase/firestore"
 import { auth, db } from "../firebase/firebaseConfig"
 
@@ -33,4 +41,24 @@ export const logoutUser = async () => {
 export const getUserData = async (uid) => {
   const userDoc = await getDoc(doc(db, "users", uid))
   return userDoc.exists() ? userDoc.data() : null
+}
+
+export const changeUserEmail = async (currentPassword, newEmail) => {
+  const user = auth.currentUser
+  if (!user) throw new Error("No hay ningún usuario autenticado.")
+
+  const credential = EmailAuthProvider.credential(user.email, currentPassword)
+
+  await reauthenticateWithCredential(user, credential)
+  await updateEmail(user, newEmail)
+}
+
+export const changeUserPassword = async (currentPassword, newPassword) => {
+  const user = auth.currentUser
+  if (!user) throw new Error("No hay ningún usuario autenticado.")
+
+  const credential = EmailAuthProvider.credential(user.email, currentPassword)
+
+  await reauthenticateWithCredential(user, credential)
+  await updatePassword(user, newPassword)
 }

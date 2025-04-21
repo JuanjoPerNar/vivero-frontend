@@ -15,6 +15,7 @@ import DashboardAdmin from './pages/DashboardAdmin'
 import NuevaActividad from './pages/NuevaActividad'
 import NuevoServicio from './pages/NuevoServicio'
 import Mensajes from './pages/Mensajes'
+import Perfil from './pages/Perfil'
 import PoliticaPrivacidad from './pages/PoliticaPrivacidad'
 import PoliticaCookies from './pages/PoliticaCookies'
 import AvisoLegal from './pages/AvisoLegal'
@@ -37,6 +38,7 @@ function App() {
           <Route path="/contacto" element={<Contacto />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/perfil" element={<Perfil />} />
           <Route path="/admin/producto-nuevo" element={<NuevoProducto />} />
           <Route path="/admin" element={<DashboardAdmin />} />
           <Route path="/admin/nueva-actividad" element={<NuevaActividad />} />

@@ -50,7 +50,7 @@ export default function Perfil() {
             onClick={() => setIsEditModalOpen(true)}
             className="bg-[#2f3e2e] text-white py-2 px-4 rounded hover:bg-[#3f513d] transition cursor-pointer"
           >
-            Editar perfil
+            Cambiar contraseña
           </button>
         </div>
       </section>

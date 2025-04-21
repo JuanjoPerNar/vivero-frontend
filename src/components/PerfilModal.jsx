@@ -8,7 +8,6 @@ import {
 
 export default function PerfilModal({ onClose }) {
   const { user } = useAuth()
-  const [newEmail, setNewEmail] = useState(user.email)
   const [currentPassword, setCurrentPassword] = useState("")
   const [newPassword, setNewPassword] = useState("")
   const [success, setSuccess] = useState("")
@@ -27,11 +26,6 @@ export default function PerfilModal({ onClose }) {
     setError("")
 
     try {
-      if (newEmail !== user.email) {
-        await changeUserEmail(currentPassword, newEmail)
-        setSuccess("Correo actualizado correctamente.")
-      }
-
       if (newPassword) {
         await changeUserPassword(currentPassword, newPassword)
         setSuccess("Contraseña actualizada correctamente.")
@@ -71,15 +65,7 @@ export default function PerfilModal({ onClose }) {
         {error && <p className="text-red-600 mb-2 text-sm">{error}</p>}
         {success && <p className="text-green-600 mb-2 text-sm">{success}</p>}
 
-        <form onSubmit={handleUpdate} className="space-y-4">
-          <input
-            type="email"
-            placeholder="Nuevo email"
-            value={newEmail}
-            onChange={(e) => setNewEmail(e.target.value)}
-            className="w-full border border-[#ccc] p-2 rounded"
-          />
-
+        <form onSubmit={handleUpdate} className="space-y-4">          
           <input
             type="password"
             placeholder="Contraseña actual"

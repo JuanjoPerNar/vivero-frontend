@@ -11,7 +11,7 @@ import PlantCard from '../components/PlantCard'
 import PostCard from '../components/PostCard'
 import ServiceCard from '../components/ServiceCard'
 
-import monstera from '../assets/monstera.jpg'
+import imagenPortada from '../assets/imagen-portada.png'
 
 export default function Home() {
   const { products } = useProducts()
@@ -48,9 +48,9 @@ export default function Home() {
           </Link>
         </div>
         <motion.img
-          src={monstera}
-          alt="Monstera"
-          className="mt-10 md:mt-0 w-full max-w-sm rounded-lg shadow-lg"
+          src={imagenPortada}
+          alt="Imagen Portada"
+          className="mt-10 md:mt-0 w-full max-w-xl rounded-lg shadow-lg"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1 }}

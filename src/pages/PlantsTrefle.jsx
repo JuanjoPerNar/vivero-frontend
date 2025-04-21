@@ -127,14 +127,14 @@ export default function PlantsTrefle() {
           <button
             onClick={handlePrevPage}
             disabled={page === 1}
-            className="px-5 py-2 bg-[#a6bc8a] text-white rounded disabled:opacity-50"
+            className="px-5 py-2 bg-[#a6bc8a] text-white rounded disabled:opacity-50 cursor-pointer"
           >
             ← Anterior
           </button>
           <span className="text-lg font-semibold">Página {page}</span>
           <button
             onClick={handleNextPage}
-            className="px-5 py-2 bg-[#a6bc8a] text-white rounded"
+            className="px-5 py-2 bg-[#a6bc8a] text-white rounded cursor-pointer"
           >
             Siguiente →
           </button>

@@ -81,7 +81,7 @@ export default function Header() {
                 <li><Link to="/servicios" className="block px-4 py-2 hover:bg-[#e5f3d5] rounded-t-xl">Todos los servicios</Link></li>
                 {["jardines", "verticales", "mantenimiento", "riego", "asesoramiento", "alquiler", "reciclaje", "rescate"].map((slug, index) => (
                   <li key={slug}>
-                    <Link to={`/servicios?tipo=${slug}`} className={`block px-4 py-2 hover:bg-[#e5f3d5] ${index === 7 ? 'rounded-b-xl' : ''}`}>
+                    <Link to={'/servicios'} className={`block px-4 py-2 hover:bg-[#e5f3d5] ${index === 7 ? 'rounded-b-xl' : ''}`}>
                       {["Diseño y creación de jardines", "Jardines verticales", "Mantenimiento periódico", "Instalación de riego eficiente", "Asesoramiento personalizado", "Alquiler de plantas para eventos", "Reciclaje de macetas", "Rescate/adopción de plantas"][index]}
                     </Link>
                   </li>

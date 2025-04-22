@@ -2,7 +2,7 @@ import { useState } from "react"
 import { motion } from "framer-motion"
 import PostCard from "../components/PostCard"
 import PostModal from "../components/PostModal"
-import PostForm from "../components/PostForm"
+import PostFormCreate from "../components/PostFormCreate"
 import usePosts from "../hooks/usePosts"
 import { useAuth } from "../context/authContext"
 
@@ -45,7 +45,7 @@ export default function Comunidad() {
 
       <section className="px-4 py-12 max-w-4xl mx-auto">
         {user ? (
-          <PostForm onSuccess={refetch}/>
+          <PostFormCreate onSuccess={refetch} />
         ) : (
           <p className="text-center text-sm text-[#2f3e2e] mb-8">
             Debes <span className="font-semibold">iniciar sesión</span> o <span className="font-semibold">registrarte</span> para publicar en la comunidad.
@@ -67,7 +67,11 @@ export default function Comunidad() {
       </section>
 
       {isModalOpen && selectedPost && (
-        <PostModal post={selectedPost} onClose={handleCloseModal} refetch={refetch} />
+        <PostModal
+          post={selectedPost}
+          onClose={handleCloseModal}
+          refetch={refetch}
+        />
       )}
     </main>
   )

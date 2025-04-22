@@ -1,21 +1,23 @@
-import { useState, useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useAuth } from "../context/authContext"
 import { uploadImage } from "../services/uploadImage"
 import api from "../utils/api"
 
-export default function PostForm({ editData = null, onSuccess }) {
+export default function PostFormEdit({ editData, onSuccess }) {
   const { user } = useAuth()
 
-  const [title, setTitle] = useState(editData?.title || "")
-  const [description, setDescription] = useState(editData?.description || "")
+  const [title, setTitle] = useState("")
+  const [description, setDescription] = useState("")
   const [imageFile, setImageFile] = useState(null)
-  const [previewUrl, setPreviewUrl] = useState(editData?.image || "")
+  const [previewUrl, setPreviewUrl] = useState("")
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
   const [showLightbox, setShowLightbox] = useState(false)
 
   useEffect(() => {
-    if (editData?.image) {
+    if (editData) {
+      setTitle(editData.title)
+      setDescription(editData.description)
       setPreviewUrl(editData.image)
     }
   }, [editData])
@@ -32,30 +34,20 @@ export default function PostForm({ editData = null, onSuccess }) {
         imageUrl = await uploadImage(imageFile)
       }
 
-      const postPayload = {
+      const updatedPost = {
         title,
         description,
         author: `${user.name} ${user.surname}`,
         image: imageUrl,
       }
 
-      if (editData) {
-        await api.put(`/posts/${editData._id}`, postPayload)
-        setSuccess("Publicación actualizada correctamente")
-      } else {
-        await api.post("/posts", postPayload)
-        setSuccess("Publicación creada correctamente")
-      }
-
-      setTitle("")
-      setDescription("")
-      setImageFile(null)
-      setPreviewUrl("")
+      await api.put(`/posts/${editData._id}`, updatedPost)
+      setSuccess("Publicación actualizada correctamente")
 
       if (onSuccess) onSuccess()
     } catch (err) {
-      console.error("Error al enviar publicación:", err)
-      setError("Hubo un error al procesar la publicación.")
+      console.error("Error al actualizar publicación:", err)
+      setError("Hubo un error al actualizar la publicación.")
     }
   }
 
@@ -68,9 +60,7 @@ export default function PostForm({ editData = null, onSuccess }) {
   return (
     <main className="bg-[#F4F9EF] py-6">
       <div className="max-w-xl mx-auto bg-white p-6 rounded-lg shadow">
-        <h2 className="text-2xl font-bold text-[#2f3e2e] mb-4 text-center">
-          {editData ? "Editar publicación" : "Crear nueva publicación"}
-        </h2>
+        <h2 className="text-2xl font-bold text-[#2f3e2e] mb-4 text-center">Editar publicación</h2>
 
         {error && <p className="text-red-600 mb-4 text-sm text-center">{error}</p>}
         {success && <p className="text-green-600 mb-4 text-sm text-center">{success}</p>}
@@ -96,7 +86,7 @@ export default function PostForm({ editData = null, onSuccess }) {
 
           <div>
             <input
-              id="imageInput"
+              id="editImageInput"
               type="file"
               accept="image/*"
               onChange={(e) => {
@@ -114,10 +104,10 @@ export default function PostForm({ editData = null, onSuccess }) {
               className="hidden"
             />
             <label
-              htmlFor="imageInput"
+              htmlFor="editImageInput"
               className="block w-full text-center bg-[#e7efe1] border border-[#ccc] text-[#2f3e2e] py-2 rounded cursor-pointer hover:bg-[#dcebd6] transition"
             >
-              {imageFile ? imageFile.name : "Seleccionar imagen"}
+              {imageFile ? imageFile.name : previewUrl ? "Imagen actual" : "Seleccionar imagen"}
             </label>
           </div>
 
@@ -144,7 +134,7 @@ export default function PostForm({ editData = null, onSuccess }) {
             type="submit"
             className="w-full bg-[#2f3e2e] text-white py-2 rounded hover:bg-[#3f513d] transition cursor-pointer"
           >
-            {editData ? "Actualizar publicación" : "Publicar"}
+            Actualizar publicación
           </button>
         </form>
       </div>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useAuth } from "../context/authContext"
 import api from "../utils/api"
-import PostForm from "./PostForm"
+import PostFormEdit from "./PostFormEdit"
 
 export default function PostModal({ post, onClose, refetch }) {
   const { user } = useAuth()
@@ -10,7 +10,7 @@ export default function PostModal({ post, onClose, refetch }) {
   useEffect(() => {
     document.body.style.overflow = "hidden"
     return () => {
-      document.body.style.overflow = ""
+      document.body.style.overflow = "auto"
     }
   }, [])
 
@@ -51,10 +51,7 @@ export default function PostModal({ post, onClose, refetch }) {
         </button>
 
         {isEditing ? (
-          <PostForm
-            editData={post}
-            onSuccess={handleEditSuccess}
-          />
+          <PostFormEdit editData={post} onSuccess={handleEditSuccess} />
         ) : (
           <>
             <h2 className="text-2xl font-semibold mb-2 text-[#2f3e2e] font-['Playfair_Display']">

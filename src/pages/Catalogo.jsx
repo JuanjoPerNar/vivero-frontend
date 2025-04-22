@@ -9,7 +9,7 @@ export default function Catalogo() {
   const [selectedCategory, setSelectedCategory] = useState("")
   const [selectedProduct, setSelectedProduct] = useState(null)
   const [page, setPage] = useState(1)
-  const productsPerPage = 10
+  const productsPerPage = 12
 
   const {
     products: allProducts,

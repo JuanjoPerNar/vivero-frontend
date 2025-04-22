@@ -1,12 +1,10 @@
 import { useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
 import { useAuth } from "../context/authContext"
 import { uploadImage } from "../services/uploadImage"
 import api from "../utils/api"
 
 export default function PostForm({ editData = null, onSuccess }) {
   const { user } = useAuth()
-  const navigate = useNavigate()
 
   const [title, setTitle] = useState(editData?.title || "")
   const [description, setDescription] = useState(editData?.description || "")
@@ -53,13 +51,8 @@ export default function PostForm({ editData = null, onSuccess }) {
       setDescription("")
       setImageFile(null)
       setPreviewUrl("")
-      setTimeout(() => {
-        if (onSuccess) {
-          onSuccess()
-        } else {
-          navigate("/comunidad")
-        }
-      }, 1500)
+
+      if (onSuccess) onSuccess()
     } catch (err) {
       console.error("Error al enviar publicación:", err)
       setError("Hubo un error al procesar la publicación.")

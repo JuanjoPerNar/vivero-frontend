@@ -45,7 +45,7 @@ export default function Comunidad() {
 
       <section className="px-4 py-12 max-w-4xl mx-auto">
         {user ? (
-          <PostForm />
+          <PostForm onSuccess={refetch}/>
         ) : (
           <p className="text-center text-sm text-[#2f3e2e] mb-8">
             Debes <span className="font-semibold">iniciar sesión</span> o <span className="font-semibold">registrarte</span> para publicar en la comunidad.

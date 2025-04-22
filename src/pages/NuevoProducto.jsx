@@ -58,7 +58,7 @@ export default function NuevoProducto({ editData = null, onSuccess }) {
       const newProduct = {
         name,
         description,
-        price,
+        price: Number(price),
         category,
         size,
         image: imageUrl,
@@ -124,21 +124,21 @@ export default function NuevoProducto({ editData = null, onSuccess }) {
           className="w-full border border-[#ccc] p-3 rounded"
         >
           <option value="">Selecciona una categoría</option>
-          <option value="interior">Plantas de interior</option>
-          <option value="exterior">Plantas de exterior</option>
-          <option value="aromaticas">Plantas aromáticas</option>
-          <option value="cactus">Cactus y suculentas</option>
+          <option value="planta">Plantas</option>
+          <option value="maceta">Macetas</option>
+          <option value="herramienta">Herramientas</option>
+          <option value="fertilizante">Fertilizantes</option>
+          <option value="kit">Kits</option>
         </select>
 
         <select
           value={size}
           onChange={(e) => setSize(e.target.value)}
-          required
           className="w-full border border-[#ccc] p-3 rounded"
         >
           <option value="">Selecciona un tamaño</option>
-          <option value="pequeño">Pequeño</option>
-          <option value="mediano">Mediano</option>
+          <option value="pequeña">Pequeño</option>
+          <option value="mediana">Mediano</option>
           <option value="grande">Grande</option>
         </select>
 

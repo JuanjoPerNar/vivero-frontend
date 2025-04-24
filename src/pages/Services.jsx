@@ -37,6 +37,18 @@ export default function Services() {
         </motion.p>
       </section>
 
+        <div className="text-center mt-12">
+          <p className="text-lg mb-4">
+            ¿Tienes dudas sobre nuestros servicios o necesitas algo personalizado?
+          </p>
+          <a
+            href="/contacto"
+            className="inline-block px-6 py-2 bg-[#2f3e2e] text-white rounded hover:bg-[#3f513d] transition"
+          >
+            Contacta con nosotros
+          </a>
+        </div>
+        
       <section className="px-4 py-12 max-w-7xl mx-auto">
         {loading && <p className="text-center">Cargando servicios...</p>}
         {error && <p className="text-center text-red-600">{error}</p>}
@@ -55,17 +67,6 @@ export default function Services() {
           ))}
         </div>
 
-        <div className="text-center mt-12">
-          <p className="text-lg mb-4">
-            ¿Tienes dudas sobre nuestros servicios o necesitas algo personalizado?
-          </p>
-          <a
-            href="/contacto"
-            className="inline-block px-6 py-2 bg-[#2f3e2e] text-white rounded hover:bg-[#3f513d] transition"
-          >
-            Contacta con nosotros
-          </a>
-        </div>
 
       </section>
 

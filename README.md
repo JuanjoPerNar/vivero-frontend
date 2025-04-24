@@ -1,15 +1,16 @@
 # Raíces de La Dolo – Frontend
 
-Este repositorio contiene el frontend del proyecto **Raíces de La Dolo**, una SPA desarrollada con React para simular un vivero digital.  
-Se conecta a un backend propio mediante una API REST y utiliza Firebase para la autenticación.
+Este repositorio contiene el frontend del proyecto **Raíces de La Dolo**, una SPA desarrollada con **React** para simular un vivero digital.
+
+Se conecta a un backend propio mediante una API REST y utiliza **Firebase** para la autenticación y almacenamiento.
 
 ---
 
 ## Objetivo
 
-Ofrecer una experiencia completa e intuitiva al usuario, desde la navegación por el catálogo hasta la participación comunitaria, con funcionalidades de administrador como la gestión de productos, publicaciones, servicios, actividades y mensajes.
+Ofrecer una experiencia completa e intuitiva al usuario, desde la navegación por el catálogo hasta la participación comunitaria, con funcionalidades de administrador para gestionar productos, publicaciones, servicios, actividades y mensajes.
 
-Este proyecto simula un vivero real, con secciones públicas y privadas, integrando diseño profesional, cumplimiento legal y herramientas modernas de desarrollo web.
+Este proyecto simula un vivero real con diseño profesional, cumplimiento legal y herramientas modernas de desarrollo web.
 
 ---
 
@@ -21,10 +22,9 @@ Este proyecto simula un vivero real, con secciones públicas y privadas, integra
 - Firebase Auth + Firestore + Storage  
 - Axios  
 - Framer Motion  
+- SweetAlert2  
 - React Icons  
 - HeroIcons  
-- ViteEnv (.env)  
-- SweetAlert2  
 - Markdown para documentación  
 
 ---
@@ -34,18 +34,19 @@ Este proyecto simula un vivero real, con secciones públicas y privadas, integra
 ```
 vivero-frontend/
 ├── public/
+│   └── _redirects          # Redirección para rutas SPA en producción
 ├── src/
-│   ├── assets/
-│   ├── components/       # Componentes reutilizables
-│   ├── context/          # AuthContext
-│   ├── firebase/         # Configuración Firebase
-│   ├── hooks/            # Custom hooks (useProducts, usePosts, etc.)
-│   ├── pages/            # Vistas principales
-│   ├── services/         # Servicios API
-│   ├── styles/           # CSS globales
-│   ├── App.jsx
-│   └── main.jsx
-├── .env
+│   ├── assets/             # Imágenes y recursos estáticos
+│   ├── components/         # Componentes reutilizables (cards, modals, etc.)
+│   ├── context/            # Contexto de autenticación
+│   ├── firebase/           # Configuración de Firebase
+│   ├── hooks/              # Hooks personalizados (useProducts, usePosts, etc.)
+│   ├── pages/              # Vistas principales del sitio
+│   ├── services/           # Funciones para conexión con la API
+│   ├── styles/             # Archivos de estilos y CSS global
+│   ├── App.jsx             # Configuración de rutas
+│   └── main.jsx            # Punto de entrada
+├── .env                    # Variables de entorno
 ├── index.html
 ├── package.json
 └── README.md
@@ -58,7 +59,7 @@ vivero-frontend/
 1. Clonar el repositorio:
 
 ```bash
-git clone https://github.com/tu-usuario/vivero-frontend.git
+git clone https://github.com/JuanjoPerNar/vivero-frontend
 cd vivero-frontend
 ```
 
@@ -68,19 +69,20 @@ cd vivero-frontend
 npm install
 ```
 
-3. Crear el archivo `.env` con las variables necesarias:
+3. Crear el archivo `.env` con las siguientes variables:
 
 ```env
-VITE_API_URL=https://<tu-backend>.onrender.com
+VITE_API_URL=https://raices-backend.onrender.com
 VITE_FIREBASE_API_KEY=...
 VITE_FIREBASE_AUTH_DOMAIN=...
 VITE_FIREBASE_PROJECT_ID=...
 VITE_FIREBASE_STORAGE_BUCKET=...
 VITE_FIREBASE_MESSAGING_SENDER_ID=...
 VITE_FIREBASE_APP_ID=...
+VITE_TREFLE_TOKEN=...
 ```
 
-4. Ejecutar el proyecto:
+4. Iniciar el entorno de desarrollo:
 
 ```bash
 npm run dev
@@ -92,47 +94,43 @@ npm run dev
 
 | Módulo              | Descripción                                                   |
 |---------------------|---------------------------------------------------------------|
-| Catálogo            | Visualización, filtrado, detalles, CRUD admin                |
-| Servicios           | Listado, detalle en modal, CRUD admin                        |
-| Publicaciones       | Comunidad de usuarios, creación, edición, eliminación        |
-| Actividades/Eventos | Listado de talleres y eventos, CRUD admin                    |
-| Contacto            | Formulario conectado a backend, validación legal             |
-| Autenticación       | Registro, login, logout con Firebase                         |
-| Perfil              | Modificación de email/contraseña, eliminación de cuenta      |
-| Dashboard Admin     | Gestión de todo el contenido desde el frontend               |
-| Trefle API          | Búsqueda de plantas reales (API externa integrada)           |
+| Catálogo            | Visualización, filtrado, detalle, creación/edición por admin  |
+| Servicios           | Listado, detalle en modal, CRUD para admin                    |
+| Actividades/Eventos | Listado de talleres y eventos, CRUD para admin                |
+| Publicaciones       | Comunidad de usuarios, creación, edición, eliminación         |
+| Trefle API          | Búsqueda de plantas reales a través de API externa            |
+| Contacto            | Formulario conectado a backend con validación legal           |
+| Autenticación       | Registro, login, logout, control de sesión                    |
+| Dashboard admin     | Gestión total del contenido (productos, servicios, etc.)      |
+| Footer legal        | Política de privacidad, cookies y aviso legal incluidos       |
 
 ---
 
 ## Cumplimiento legal
-
-Incluye:
 
 - Página de **Política de Privacidad**  
 - Página de **Política de Cookies**  
 - Página de **Aviso Legal**  
 - Checkboxes de consentimiento en formularios  
 - Enlaces visibles en el footer  
-- Todos los formularios cumplen con el **RGPD**
+- Formularios validados y adaptados al **RGPD**
 
 ---
 
 ## Producción y despliegue
 
-El frontend está preparado para producción:
-
-- Código limpio y modular  
-- Uso de `.env` para entornos  
-- Desplegado en [Netlify]  
+- Proyecto desplegado en **Netlify**: [https://raicesdeladolo.netlify.app](https://raicesdeladolo.netlify.app)  
+- Backend conectado desde Render: [https://raices-backend.onrender.com](https://raices-backend.onrender.com)  
+- Redirecciones configuradas con `_redirects` en producción
 
 ---
 
 ## Consideraciones
 
-- El proyecto **no es comercial**. Es **ficticio y educativo**.  
-- Toda la información e imágenes son simuladas o de uso público.  
-- Firebase se usa para login y base de datos de usuarios.  
-- Backend propio desplegado en **Render**.  
+- El proyecto **no es comercial**. Está creado con fines educativos.  
+- Toda la información e imágenes son simuladas o de uso libre.  
+- Las funcionalidades de administración están disponibles solo para usuarios autenticados con rol **admin**.  
+- La autenticación y los datos de usuarios se gestionan con **Firebase**.  
 
 ---
 

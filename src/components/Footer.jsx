@@ -74,12 +74,12 @@ export default function Footer() {
                 href="mailto:info@raicesdeladolo.com"
                 className="hover:text-green-800"
               >
-                jjpereiranaranjo@gmail.com
+                raicesdeladolo@gmail.com
               </a>
             </li>
             <li className="flex items-center gap-2">
               <FiPhone className="w-4 h-4" />
-              <span>+34 687 243 518</span>
+              <span>+34 999 999 999</span>
             </li>
             <li className="flex gap-4 items-center mt-2">
               <a
